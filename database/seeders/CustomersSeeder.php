@@ -33,7 +33,7 @@ class CustomersSeeder extends Seeder
                 'username' => 'dimas',
                 'email' => 'dimas@mail.com',
                 'password' => Hash::make('123'),
-                'full_name' => 'Dimas Pratama',
+                'full_name' => 'Dimas Prayoga',
                 'image_path' => 'storage/customers/profile3.png',
                 'created_at' => now(),
                 'updated_at' => now(),
