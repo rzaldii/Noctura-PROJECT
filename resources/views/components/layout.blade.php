@@ -35,13 +35,13 @@
     </div>
   </header>
 
-    <main class="pt-12 pb-16 px-6 md:px-12">
+    <main class="pt-6 pb-16 px-6 md:px-12">
         @yield('content')
     </main>
 
   <footer class="bg-gray-700 text-white mt-12">
     <div class="container mx-auto px-4 py-10 text-center text-sm">
-      © {{ date('Y') }} Noctura. All rights reserved.
+      © 2025 Noctura - PWEB Kelompok 9
     </div>
   </footer>
 </body>

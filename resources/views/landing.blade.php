@@ -3,6 +3,7 @@
 @section('title', 'Daftar Event')
 
 @section('content')
+<h1 class="text-4xl font-bold text-center pb-6">Hallooww, mau cari event apa nihh?</h1>
 <div class="grid grid-cols-12 gap-10">
   <!-- Sidebar filter (col 3 of 12) -->
   <aside class="col-span-12 md:col-span-3 bg-white rounded-lg p-4 shadow-sm">

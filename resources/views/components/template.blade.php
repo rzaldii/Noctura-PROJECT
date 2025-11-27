@@ -24,7 +24,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen font-sans">
+<body class="bg-gray-100 min-h-screen font-sans text-gray-800">
     @include('components.layout')
 
     @yield('scripts')
