@@ -29,19 +29,19 @@ class Event extends Model
         'status'
     ];
 
-    public function organizers()
+    public function organizer()
     {
-        return $this->belongsTo(Organizer::class, 'organizer_id');
+        return $this->belongsTo(Organizer::class, 'organizer_id', 'id');
     }
 
-    public function categories()
+    public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     public function tickets()
     {
-        return $this->hasMany(Ticket::class,);
+        return $this->hasMany(Ticket::class, 'event_id', 'id');
     }
 
 }

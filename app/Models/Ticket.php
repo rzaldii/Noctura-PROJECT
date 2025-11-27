@@ -22,9 +22,9 @@ class Ticket extends Model
         'max_purchase'
     ];
 
-    public function events()
+    public function event()
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Event::class, 'event_id', 'id');
     }
 
     public function orderDetails()

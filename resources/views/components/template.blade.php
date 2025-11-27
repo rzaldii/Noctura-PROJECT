@@ -25,11 +25,7 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen font-sans">
-    @include('components.navbar')
-
-    <main class="pt-24 px-6 md:px-12">
-        @yield('content')
-    </main>
+    @include('components.layout')
 
     @yield('scripts')
 </body>
