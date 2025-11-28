@@ -1,8 +1,8 @@
-@extends('components.template')
+@extends('components.layout')
 @section('title', 'Login ')
 @section('content')
 
-<div class="w-3/4 h-auto flex shadow-lg bg-white rounded-3xl overflow-hidden mx-auto justify-center mt-12">
+<div class="w-3/4 h-auto flex shadow-lg bg-white rounded-3xl overflow-hidden mx-auto justify-center mt-6">
     <!-- kiri -->
     <div class="hidden lg:flex w-1/2 relative">
         <img src="{{ asset('images/event.jpeg') }}"
@@ -40,6 +40,22 @@
                     <input type="password" name="password" placeholder="Password"
                         class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                         required>
+                </div>
+
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Login sebagai</label>
+
+                    <div class="flex items-center gap-4">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="role" value="customer" required>
+                            Customer
+                        </label>
+
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="role" value="organizer">
+                            Event Organizer
+                        </label>
+                    </div>
                 </div>
 
                 <button type="submit"

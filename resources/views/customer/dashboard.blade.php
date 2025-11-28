@@ -1,4 +1,4 @@
-@extends('components.layout')
+@extends('components.layout_customer')
 
 @section('title', 'Daftar Event')
 
