@@ -59,7 +59,7 @@
             </form>
 
             <!-- Navbar link -->
-            <nav class="flex items-center gap-3">
+            <nav class="flex items-center gap-1">
                 <a href="{{ route('landing') }}" class=" bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-300">Home</a>
                 <a href="#" class=" bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-300">About Us</a>
                 <a href="#" class=" bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-300">Contact</a>

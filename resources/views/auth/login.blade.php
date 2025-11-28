@@ -18,12 +18,18 @@
     <!-- kanan -->
     <div class="w-full lg:w-1/2 flex items-center justify-center px-10">
         <div class="w-full max-w-md py-12">
-            <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-2 text-center">
                 Selamat datang kembali!
             </h2>
-            <p class="text-gray-600 mb-8">
+            <p class="text-gray-600 mb-8 text-center">
                 Silakan masuk untuk melanjutkan ke akun Anda.
             </p>
+
+            @if (session('error'))
+            <div class="bg-red-100 text-red-700 px-4 py-2 rounded-md mb-3 text-center w-3/4 mx-auto">
+                {{ session('error') }}
+            </div>
+            @endif
 
             <form action="{{ route('login.process') }}" method="POST" class="space-y-6">
                 @csrf
