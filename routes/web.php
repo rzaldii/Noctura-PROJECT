@@ -13,7 +13,7 @@ use App\Http\Controllers\Organizer\DashboardController as OrganizerDashboardCont
 use App\Http\Controllers\Organizer\EventController;
 use App\Http\Controllers\Organizer\OrderController;
 use App\Http\Controllers\Organizer\TicketController;
-use App\Http\Controllers\Organizer\ProfileController;
+use App\Http\Controllers\Organizer\ProfileOrganizerController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
@@ -66,27 +66,6 @@ Route::middleware([AuthCustom::class, RoleCustomer::class])->group(function () {
 });
 
 // organizer
-// Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer')->group(function () {
-//     Route::get('/organizer/dashboard', [OrganizerDashboardController::class, 'index'])
-//         ->name('organizer.dashboard');
-//     Route::get('/events', [EventController::class, 'index'])
-//         ->name('organizer.events');
-//     Route::get('/orders', [OrderController::class, 'index'])
-//         ->name('organizer.orders');
-//     Route::get('/profile', [ProfileController::class, 'index'])
-//         ->name('organizer.profile');
-//     Route::get('/tickets', [TicketController::class, 'index'])
-//         ->name('organizer.tickets');
-// });
-// organizer
-// Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer')->group(function () {
-//     Route::get('/dashboard', [OrganizerDashboardController::class, 'index'])->name('organizer.dashboard');
-//     Route::get('/events', [EventController::class, 'index'])->name('organizer.events');
-//     Route::get('/orders', [OrderController::class, 'index'])->name('organizer.orders');
-//     Route::get('/profile', [ProfileController::class, 'index'])->name('organizer.profile');
-// });
-
-// organizer
 Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer')->group(function () {
     // Dashboard - cuma list event
     Route::get('/dashboard', [OrganizerDashboardController::class, 'index'])->name('organizer.dashboard');
@@ -103,11 +82,14 @@ Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer'
     Route::get('/events/{event}/tickets', [TicketController::class, 'index'])->name('organizer.tickets.index');
     Route::get('/events/{event}/tickets/create', [TicketController::class, 'create'])->name('organizer.tickets.create');
     Route::post('/events/{event}/tickets', [TicketController::class, 'store'])->name('organizer.tickets.store');
+    Route::get('/tickets/{id}/edit', [TicketController::class, 'edit'])->name('organizer.tickets.edit');
+    Route::put('/tickets/{id}', [TicketController::class, 'update'])->name('organizer.tickets.update');
     Route::delete('/tickets/{id}', [TicketController::class, 'destroy'])->name('organizer.tickets.destroy');
 
     // Pemesanan
     Route::get('/orders', [OrderController::class, 'index'])->name('organizer.orders');
 
     // Profile
-    Route::get('/profile', [ProfileController::class, 'index'])->name('organizer.profile');
+    Route::get('/profile', [ProfileOrganizerController::class, 'index'])->name('organizer.profile');
+    Route::post('/logout', [ProfileOrganizerController::class, 'logout'])->name('organizer.logout');
 });

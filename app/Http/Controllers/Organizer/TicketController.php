@@ -59,6 +59,47 @@ class TicketController extends Controller
             ->with('success', 'Tiket berhasil ditambahkan!');
     }
 
+    // Form edit tiket
+    public function edit($id)
+    {
+        $ticket = Ticket::findOrFail($id);
+
+        // Cek apakah event milik organizer ini
+        $event = Event::where('id', $ticket->event_id)
+            ->where('organizer_id', session('user_id'))
+            ->firstOrFail();
+
+        return view('organizer.tickets.edit', compact('ticket', 'event'));
+    }
+
+    // Update tiket
+    public function update(Request $request, $id)
+    {
+        $ticket = Ticket::findOrFail($id);
+
+        // Cek apakah event milik organizer ini
+        $event = Event::where('id', $ticket->event_id)
+            ->where('organizer_id', session('user_id'))
+            ->firstOrFail();
+
+        $request->validate([
+            'name' => 'required|max:100',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:1',
+        ]);
+
+        $ticket->update([
+            'name' => $request->name,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'min_purchase' => $request->min_purchase ?? 1,
+            'max_purchase' => $request->max_purchase ?? 10,
+        ]);
+
+        return redirect()->route('organizer.tickets.index', $ticket->event_id)
+            ->with('success', 'Tiket berhasil diupdate!');
+    }
+
     // Hapus tiket
     public function destroy($id)
     {
