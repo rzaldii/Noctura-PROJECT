@@ -40,6 +40,16 @@ class AuthController extends Controller
             'browser_fingerprint' => $request->header('User-Agent'),
         ]);
 
+        if ($request->role === 'organizer') {
+            session([
+                'user' => [
+                    'fullname' => $user->organization_name ?? $user->username,
+                    'image' => $user->image_path ?? 'images/default-avatar.png',
+                    'email' => $user->email,
+                ]
+            ]);
+        }
+
         return redirect()->route($request->role . '.dashboard');
     }
 
@@ -64,27 +74,30 @@ class AuthController extends Controller
         $path = null;
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('uploads', 'public');
+            $path = 'storage/' . $path; // Sesuaikan dengan cara akses di view
         }
 
         if ($request->role === 'customer') {
-
             DB::table('customers')->insert([
                 'full_name' => $request->fullname,
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'image_url' => $path,
+                'image_path' => $path,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
-
+            
         } else {
-
             DB::table('organizers')->insert([
-                'name' => $request->fullname,
+                'organization_name' => $request->fullname, // Sesuaikan dengan kolom di DB
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'image_url' => $path,
-                'description' => $request->description
+                'image_path' => $path, // Sesuaikan dengan kolom di DB
+                'description' => $request->description,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
 
