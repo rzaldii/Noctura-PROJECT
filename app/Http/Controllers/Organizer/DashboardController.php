@@ -33,10 +33,54 @@ class DashboardController extends Controller
             }
         }
 
-        $events = Event::where('organizer_id', $organizerId)
-            ->orderBy('start_time', 'desc')
-            ->get();
+        // 1. Total Event
+        $totalEvents = Event::where('organizer_id', $organizerId)->count();
 
-        return view('organizer.dashboard', compact('events'));
+        // 2. Total Tiket Terjual
+        $totalTicketsSold = OrderDetail::whereHas('tickets', function ($q) use ($organizerId) {
+            $q->whereHas('event', function ($q2) use ($organizerId) {
+                $q2->where('organizer_id', $organizerId);
+            });
+        })->sum('quantity');
+
+        // 3. Total Pelanggan
+        $totalCustomers = Order::whereHas('orderDetails', function ($q) use ($organizerId) {
+            $q->whereHas('tickets', function ($q2) use ($organizerId) {
+                $q2->whereHas('event', function ($q3) use ($organizerId) {
+                    $q3->where('organizer_id', $organizerId);
+                });
+            });
+        })->distinct('customer_id')->count('customer_id');
+
+        // 4. Total Pendapatan
+        $totalRevenue = OrderDetail::whereHas('tickets', function ($q) use ($organizerId) {
+            $q->whereHas('event', function ($q2) use ($organizerId) {
+                $q2->where('organizer_id', $organizerId);
+            });
+        })->sum('subtotal');
+
+        $events = Event::where('organizer_id', $organizerId)
+            ->with(['tickets.orderDetails'])
+            ->orderBy('start_time', 'desc')
+            ->get()
+            ->map(function ($event) {
+                $ticketsSoldPerEvent = $event->tickets->sum('sold');
+
+                $revenuePerEvent = OrderDetail::whereIn('ticket_id', $event->tickets->pluck('id'))
+                    ->sum('subtotal');
+
+                $event->tickets_sold = $ticketsSoldPerEvent;
+                $event->revenue = $revenuePerEvent;
+
+                return $event;
+            });
+
+        return view('organizer.dashboard', compact(
+            'totalEvents',
+            'totalTicketsSold',
+            'totalCustomers',
+            'totalRevenue',
+            'events'
+        ));
     }
 }

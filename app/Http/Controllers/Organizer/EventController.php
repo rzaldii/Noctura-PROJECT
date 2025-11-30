@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
-    // Tampil semua event milik organizer ini (Manage Event)
     public function index()
     {
         $organizerId = session('user_id');
@@ -98,6 +97,7 @@ class EventController extends Controller
 
         $imagePath = $event->image_path;
         if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
             if ($imagePath && file_exists(public_path($imagePath))) {
                 unlink(public_path($imagePath));
             }
@@ -129,6 +129,7 @@ class EventController extends Controller
             ->where('organizer_id', session('user_id'))
             ->firstOrFail();
 
+        // Hapus gambar jika ada
         if ($event->image_path && file_exists(public_path($event->image_path))) {
             unlink(public_path($event->image_path));
         }

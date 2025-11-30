@@ -1,5 +1,5 @@
 @extends('components.layout')
-@section('title', 'About & Contact — ')
+@section('title', 'Contact')
 
 @section('content')
 <div class="max-w-4xl mx-auto py-16 px-6">

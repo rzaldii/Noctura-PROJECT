@@ -9,7 +9,6 @@ use App\Models\Event;
 
 class TicketController extends Controller
 {
-    // Tampil semua tiket untuk 1 event
     public function index($eventId)
     {
         $event = Event::where('id', $eventId)

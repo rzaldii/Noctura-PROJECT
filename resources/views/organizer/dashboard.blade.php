@@ -4,9 +4,30 @@
 
 @section('content')
 <div class="container mx-auto">
-    <h1 class="text-3xl font-bold text-center mb-6">Daftar Event</h1>
+    <h1 class="text-3xl font-bold text-center mb-8">Dashboard Event Organizer</h1>
 
-    {{-- Event List (READ ONLY - NO BUTTONS) --}}
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg shadow-lg p-6 text-center">
+            <div class="text-sm uppercase tracking-wide mb-2">Total Event</div>
+            <div class="text-4xl font-bold">{{ $totalEvents }}</div>
+        </div>
+
+        <div class="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg shadow-lg p-6 text-center">
+            <div class="text-sm uppercase tracking-wide mb-2">Tiket Terjual</div>
+            <div class="text-4xl font-bold">{{ $totalTicketsSold }}</div>
+        </div>
+
+        <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-6 text-center">
+            <div class="text-sm uppercase tracking-wide mb-2">Total Pelanggan</div>
+            <div class="text-4xl font-bold">{{ $totalCustomers }}</div>
+        </div>
+
+        <div class="bg-gradient-to-br from-pink-500 to-pink-600 text-white rounded-lg shadow-lg p-6 text-center">
+            <div class="text-sm uppercase tracking-wide mb-2">Total Pendapatan</div>
+            <div class="text-3xl font-bold">Rp{{ number_format($totalRevenue, 0, ',', '.') }}</div>
+        </div>
+    </div>
+
     <div class="bg-white rounded-lg shadow overflow-hidden">
         <div class="p-4 border-b flex justify-between items-center">
             <h2 class="font-semibold text-lg">Event Saya</h2>
@@ -29,6 +50,8 @@
                                 <th class="p-3">Nama Event</th>
                                 <th class="p-3">Lokasi</th>
                                 <th class="p-3">Tanggal</th>
+                                <th class="p-3 text-center">Tiket Terjual</th>
+                                <th class="p-3 text-center">Pendapatan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,13 +70,25 @@
                                 </td>
                                 <td class="p-3 font-semibold">{{ $event->title }}</td>
                                 <td class="p-3">
-                                    {{ $event->address ?? '-' }}
-                                    @if($event->city)
-                                        , {{ $event->city }}
+                                    @if($event->event_type === 'offline')
+                                        {{ $event->address ?? '-' }}
+                                        @if($event->city), {{ $event->city }}@endif
+                                    @else
+                                        <span class="text-blue-600 font-semibold">Online Event</span>
                                     @endif
                                 </td>
                                 <td class="p-3">
                                     {{ \Carbon\Carbon::parse($event->start_time)->format('d M Y') }}
+                                </td>
+                                <td class="p-3 text-center">
+                                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">
+                                        {{ $event->tickets_sold }}
+                                    </span>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold">
+                                        Rp{{ number_format($event->revenue, 0, ',', '.') }}
+                                    </span>
                                 </td>
                             </tr>
                             @endforeach

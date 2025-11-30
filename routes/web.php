@@ -68,10 +68,7 @@ Route::middleware([AuthCustom::class, RoleCustomer::class])->group(function () {
 
 // organizer
 Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer')->group(function () {
-    // Dashboard - cuma list event
     Route::get('/dashboard', [OrganizerDashboardController::class, 'index'])->name('organizer.dashboard');
-
-    // Kelola Event - semua CRUD ada disini
     Route::get('/events', [EventController::class, 'index'])->name('organizer.events');
     Route::get('/events/create', [EventController::class, 'create'])->name('organizer.events.create');
     Route::post('/events', [EventController::class, 'store'])->name('organizer.events.store');
