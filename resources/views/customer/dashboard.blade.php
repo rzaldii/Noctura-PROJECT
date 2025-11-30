@@ -5,12 +5,10 @@
 @section('content')
 <h1 class="text-4xl font-bold text-center pb-6">Hallooww, mau cari event apa nihh?</h1>
 <div class="grid grid-cols-12 gap-10">
-  <!-- Sidebar filter (col 3 of 12) -->
   <aside class="col-span-12 md:col-span-3 bg-white rounded-lg p-4 shadow-sm">
     <h3 class="font-bold mb-3 text-2xl text-center">Filter</h3>
 
     <form id="filterForm" action="{{ route('landing') }}" method="GET" class="space-y-4">
-      <!-- preserve search -->
       <input type="hidden" name="q" value="{{ request('q') }}">
 
       <!-- City -->
@@ -68,7 +66,7 @@
     </form>
   </aside>
 
-  <!-- Event list (col 9 of 12) -->
+  <!-- Event list -->
   <section class="col-span-12 md:col-span-9">
     <div class="mb-4">
       <p class="text-sm text-gray-600">
@@ -76,11 +74,9 @@
       </p>
     </div>
 
-    <!-- Grid: 4 columns on desktop, 2 on tablet, 1 on mobile -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       @foreach($events as $event)
         @php
-          // compute minimum ticket price (if available)
           $minPrice = null;
           if ($event->tickets && $event->tickets->count()) {
               $prices = $event->tickets->pluck('price')->filter()->toArray();

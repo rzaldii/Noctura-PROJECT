@@ -87,14 +87,14 @@ class AuthController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-            
+
         } else {
             DB::table('organizers')->insert([
-                'organization_name' => $request->fullname, // Sesuaikan dengan kolom di DB
+                'organization_name' => $request->fullname,
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'image_path' => $path, // Sesuaikan dengan kolom di DB
+                'image_path' => $path,
                 'description' => $request->description,
                 'created_at' => now(),
                 'updated_at' => now(),

@@ -64,7 +64,6 @@ class TicketController extends Controller
     {
         $ticket = Ticket::findOrFail($id);
 
-        // Cek apakah event milik organizer ini
         $event = Event::where('id', $ticket->event_id)
             ->where('organizer_id', session('user_id'))
             ->firstOrFail();
@@ -77,7 +76,6 @@ class TicketController extends Controller
     {
         $ticket = Ticket::findOrFail($id);
 
-        // Cek apakah event milik organizer ini
         $event = Event::where('id', $ticket->event_id)
             ->where('organizer_id', session('user_id'))
             ->firstOrFail();
@@ -105,7 +103,6 @@ class TicketController extends Controller
     {
         $ticket = Ticket::findOrFail($id);
 
-        // Cek apakah event milik organizer ini
         $event = Event::where('id', $ticket->event_id)
             ->where('organizer_id', session('user_id'))
             ->firstOrFail();

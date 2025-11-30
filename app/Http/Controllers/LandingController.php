@@ -11,32 +11,26 @@ class LandingController extends Controller
 {
     public function index(Request $request)
     {
-        // Base query: only active events
         $query = Event::query()->where('status', 'active')
             ->with(['tickets', 'organizer', 'category']);
 
-        // Search by event title
         if ($request->filled('q')) {
             $q = $request->input('q');
-            $query->where('title', 'ilike', "%{$q}%"); // using ilike for Postgres case-insensitive
+            $query->where('title', 'ilike', "%{$q}%");
         }
 
-        // Filter: city
         if ($request->filled('city')) {
             $query->where('city', $request->input('city'));
         }
 
-        // Filter: event_type (online/offline)
         if ($request->filled('event_type')) {
             $query->where('event_type', $request->input('event_type'));
         }
 
-        // Filter: category (filter by category id)
         if ($request->filled('category')) {
             $query->where('category_id', $request->input('category'));
         }
 
-        // Filter: time (today, week, month, year)
         if ($request->filled('time')) {
             $time = $request->input('time');
             $now = Carbon::now();
@@ -52,11 +46,9 @@ class LandingController extends Controller
             }
         }
 
-        // Pagination: 8 per page
+        // Pagination
         $events = $query->orderBy('start_time', 'asc')->paginate(8)->withQueryString();
 
-        // Sidebar options:
-        // cities: distinct non-null cities from events
         $cities = Event::query()
             ->whereNotNull('city')
             ->where('city', '!=', '')

@@ -42,6 +42,7 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
+
 // guest
 Route::middleware(GuestCustom::class)->group(function () {
     Route::get('/login', [AuthController::class, 'loginPage'])->name('login');

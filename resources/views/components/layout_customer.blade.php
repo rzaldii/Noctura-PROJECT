@@ -9,9 +9,7 @@
 </head>
 
 <body class="bg-gray-100 text-gray-900">
-
-    <!-- NAVBAR CUSTOMER -->
-    <header class="bg-gray-700 text-white shadow">
+    <header class="bg-gray-700 text-white shadow px-6">
         <div class="container mx-auto px-6 py-3 flex items-center justify-between">
 
             <!-- Logo -->
@@ -34,7 +32,7 @@
             </form>
 
             <!-- Menu -->
-            <nav class="flex items-center space-x-4">
+            <nav class="flex items-center space-x-2">
 
                 <a href="{{ route('customer.dashboard') }}"
                    class="hover:bg-gray-600 px-3 py-1 rounded-md duration-300">
@@ -51,14 +49,27 @@
                     Riwayat
                 </a>
 
-                <!-- Profile Picture -->
-                <a href="{{ route('login') }}">
-                    <img
-                        src="{{ asset(Auth::user()->image ?? 'images/default-avatar.png') }}"
-                        class="w-9 h-9 rounded-full border-2 border-white object-cover ml-6"
-                        alt="Profile"
-                    >
-                </a>
+            <!-- Profile Picture -->
+            @php
+                use App\Models\Customer;
+
+                $customerData = null;
+
+                if (session('user_id')) {
+                    $customerData = Customer::find(session('user_id'));
+                }
+            @endphp
+
+            <a href="{{ route('customer.profile') }}">
+                <img
+                    src="{{ $customerData && $customerData->image_path
+                        ? asset($customerData->image_path)
+                        : asset('images/default_user.png') }}"
+                    class="w-12 h-12 rounded-full object-cover border ml-12"
+                    alt="Foto Profil">
+            </a>
+
+
 
             </nav>
 

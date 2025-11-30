@@ -20,7 +20,6 @@ class DashboardController extends Controller
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        // Ambil data organizer dan set ke session jika belum ada
         if (!session('user')) {
             $organizer = DB::table('organizers')->where('id', $organizerId)->first();
             if ($organizer) {
@@ -34,7 +33,6 @@ class DashboardController extends Controller
             }
         }
 
-        // Ambil SEMUA event milik organizer ini (tanpa limit)
         $events = Event::where('organizer_id', $organizerId)
             ->orderBy('start_time', 'desc')
             ->get();

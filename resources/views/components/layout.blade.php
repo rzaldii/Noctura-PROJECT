@@ -63,7 +63,6 @@
                 <a href="{{ route('landing')}}" class="font-medium bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-500">Home</a>
                 <a href="{{ route('about')}}" class="font-medium bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-500">About Us</a>
                 <a href="{{ route('contact')}}" class="font-medium bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-500">Contact</a>
-            </nav>
 
             <!-- Login Button -->
             <a href="{{ route('login.clear') }}"
