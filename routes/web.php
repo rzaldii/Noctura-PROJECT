@@ -29,6 +29,13 @@ Route::get('/login/clear', function () {
     return redirect()->route('login');
 })->name('login.clear');
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
 
 // guest
 Route::middleware(GuestCustom::class)->group(function () {
