@@ -3,15 +3,21 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\EventDetailController;
+// Middleware
 use App\Http\Middleware\AuthCustom;
 use App\Http\Middleware\GuestCustom;
 use App\Http\Middleware\RoleCustomer;
 use App\Http\Middleware\RoleOrganizer;
+// Customer Controllers
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\ProfileCustomerController;
+use App\Http\Controllers\Customer\CartController;
+use App\Http\Controllers\Customer\OrderController;
+// Organizer Controllers
 use App\Http\Controllers\Organizer\DashboardController as OrganizerDashboardController;
 use App\Http\Controllers\Organizer\EventController;
-use App\Http\Controllers\Organizer\OrderController;
+use App\Http\Controllers\Organizer\OrderController as OrganizerOrderController;
 use App\Http\Controllers\Organizer\TicketController;
 use App\Http\Controllers\Organizer\ProfileOrganizerController;
 
@@ -47,23 +53,27 @@ Route::get('/contact', function () {
 Route::middleware(GuestCustom::class)->group(function () {
     Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
     Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.process');
-
     Route::get('/register', [AuthController::class, 'registerPage'])->name('register');
     Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process');
 });
 
 // customer
-Route::middleware([AuthCustom::class, RoleCustomer::class])->group(function () {
-    Route::get('/customer/dashboard', [DashboardController::class, 'index'])
-        ->name('customer.dashboard');
-    Route::get('/customer/cart', function() { return 'Keranjang'; })
-        ->name('customer.cart');
-    Route::get('/customer/history', function() { return 'Riwayat'; })
-        ->name('customer.history');
-    Route::get('/customer/profile', [ProfileCustomerController::class, 'index'])
-        ->name('customer.profile');
-    Route::post('/customer/logout', [ProfileCustomerController::class, 'logout'])
-        ->name('customer.logout');
+Route::middleware([AuthCustom::class, RoleCustomer::class])->prefix('customer')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('customer.dashboard');
+    // Profile
+    Route::get('/profile', [ProfileCustomerController::class, 'index'])->name('customer.profile');
+    Route::get('/profile/edit', [ProfileCustomerController::class, 'edit'])->name('customer.profile.edit');
+    Route::post('/profile/update', [ProfileCustomerController::class, 'update'])->name('customer.profile.update');
+    Route::post('/logout', [ProfileCustomerController::class, 'logout'])->name('customer.logout');
+    // Cart Page
+    Route::get('/cart', [CartController::class, 'index'])->name('customer.cart');
+    Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('customer.cart.update');
+    Route::delete('/cart/delete/{id}', [CartController::class, 'delete'])->name('customer.cart.delete');
+    Route::post('/event/{id}/add-to-cart', [CartController::class, 'addFromEvent'])->name('event.add_to_cart');
+    Route::post('/event/{id}/order-now', [OrderController::class, 'orderNow'])->name('event.order_now');
+    Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('customer.cart.update');
+    Route::delete('/cart/delete/event/{eventId}', [CartController::class, 'deleteEvent'])->name('customer.cart.delete_event');
 });
 
 // organizer
@@ -91,3 +101,10 @@ Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer'
     Route::get('/profile', [ProfileOrganizerController::class, 'index'])->name('organizer.profile');
     Route::post('/logout', [ProfileOrganizerController::class, 'logout'])->name('organizer.logout');
 });
+
+// Detail Event
+Route::get('/detail/event/{id}', [EventDetailController::class, 'show'])->name('event.detail');
+Route::post('/detail/event/{id}/add-to-cart', [EventDetailController::class, 'addToCart'])
+    ->name('event.add_to_cart');
+Route::post('/detail/event/{id}/order-now', [EventDetailController::class, 'orderNow'])
+    ->name('event.order_now');

@@ -7,11 +7,9 @@
     <div class="hidden lg:flex w-1/2 relative">
         <img src="{{ asset('images/event.jpeg') }}"
              class="absolute inset-0 w-full h-full object-cover" alt="Event">
-        <div class="absolute inset-0 bg-gray-700/60"></div>
+        <div class="absolute inset-0 bg-gray-700/70"></div>
         <div class="relative z-10 flex items-center justify-center w-full">
-            <h1 class="text-5xl font-bold text-white tracking-wide">
-                Noctura
-            </h1>
+            <img src="{{ asset('storage/logo noctura.png') }}" alt="Noctura Logo" class="w-auto h-44">
         </div>
     </div>
 

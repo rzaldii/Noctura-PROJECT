@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void
+    public function up()
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            $table->timestampsTz();
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

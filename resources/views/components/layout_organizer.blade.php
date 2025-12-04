@@ -20,9 +20,10 @@
         <div class="container mx-auto px-6 py-3 flex items-center justify-between">
 
             {{-- Logo --}}
-            <a href="{{ route('organizer.dashboard') }}" class="text-2xl font-bold">
-                Noctura
-            </a>
+            <div class="flex items-center gap-2 cursor-pointer">
+                <img src="{{ asset('storage/logo noctura.png') }}" alt="Noctura Logo" class="h-12 w-auto">
+                <h1 class="text-3xl font-bold cursor-pointer">Noctura</h1>
+            </div>
 
             <nav class="flex items-center space-x-4">
                 <a href="{{ route('organizer.dashboard') }}"
@@ -39,21 +40,38 @@
                    class="hover:bg-gray-600 px-3 py-1 rounded-md duration-300">
                     Pemesanan
                 </a>
-
-                {{-- Profile --}}
-                <a href="{{ route('organizer.profile') }}">
-                    <img src="{{ asset(session('user.image', 'images/default-avatar.png')) }}"
-                         class="w-9 h-9 rounded-full border-2 border-white object-cover ml-6"
-                         alt="{{ session('user.fullname', 'Organizer') }}">
-                </a>
             </nav>
 
+            <!-- Profile Picture -->
+            @php
+                use App\Models\Organizer;
+
+                $organizerData = null;
+
+                if (session('user_id')) {
+                    $organizerData = Organizer::find(session('user_id'));
+                }
+            @endphp
+
+            <a href="{{ route('organizer.profile') }}" class="ml-4 flex items-center gap-3">
+                <img
+                    src="{{ $organizerData && $organizerData->image_path
+                        ? asset($organizerData->image_path)
+                        : asset('images/default_user.png') }}"
+                    class="w-12 h-12 rounded-full object-cover border"
+                    alt="Foto Profil">
+                <p class="font-semibold text-xl">
+                    {{ $organizerData ? $organizerData->username : 'Organizer' }}
+                </p>
+            </a>
         </div>
     </header>
 
     <main class="py-8 px-6 md:px-10">
         @yield('content')
     </main>
+
+    @yield('scripts')
 
 </body>
 </html>

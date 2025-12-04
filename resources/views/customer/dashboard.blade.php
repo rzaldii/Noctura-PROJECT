@@ -8,7 +8,7 @@
   <aside class="col-span-12 md:col-span-3 bg-white rounded-lg p-4 shadow-sm">
     <h3 class="font-bold mb-3 text-2xl text-center">Filter</h3>
 
-    <form id="filterForm" action="{{ route('landing') }}" method="GET" class="space-y-4">
+    <form id="filterForm" action="{{ route('customer.dashboard') }}" method="GET" class="space-y-4">
       <input type="hidden" name="q" value="{{ request('q') }}">
 
       <!-- City -->
@@ -86,7 +86,7 @@
           }
         @endphp
 
-        <a href="#" class="block bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition">
+        <a href="{{ route('event.detail', $event->id) }}" class="block bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition">
           <div class="h-40 bg-gray-200">
             @if($event->image_path)
               <img src="{{ asset($event->image_path) }}" alt="{{ $event->title }}" class="object-cover w-full h-full">

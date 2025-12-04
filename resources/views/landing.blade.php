@@ -1,5 +1,4 @@
 @extends('components.layout')
-
 @section('title', 'Daftar Event')
 
 @section('content')
@@ -85,7 +84,7 @@
           }
         @endphp
 
-        <a href="#" class="block bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition">
+        <a href="{{ route('event.detail', $event->id) }}" class="block bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition">
           <div class="h-40 bg-gray-200">
             @if($event->image_path)
               <img src="{{ asset($event->image_path) }}" alt="{{ $event->title }}" class="object-cover w-full h-full">

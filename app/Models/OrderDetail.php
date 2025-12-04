@@ -32,6 +32,6 @@ class OrderDetail extends Model
 
     public function issuedTickets()
     {
-        return $this->hasMany(IssuedTicket::class);
+        return $this->hasMany(IssuedTicket::class, 'order_detail_id', 'id');
     }
 }
