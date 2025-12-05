@@ -141,12 +141,12 @@
 
 {{-- Modal: ask to login --}}
 <div id="loginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40">
-    <div class="bg-white rounded-lg p-6 w-96">
-        <h3 class="text-lg font-semibold mb-3">Silakan login</h3>
+    <div class="bg-white rounded-lg p-6 w-96 text-center justify-center items-center">
+        <h3 class="text-xl font-semibold mb-3">Silahkan login dulu!!</h3>
         <p class="text-sm text-gray-600 mb-4">Anda perlu login untuk melanjutkan pemesanan atau menambah ke keranjang.</p>
-        <div class="flex justify-end gap-2">
-            <button onclick="closeModal()" class="px-3 py-1 rounded border">Batal</button>
-            <a href="{{ route('login') }}" class="px-3 py-1 bg-blue-600 text-white rounded">Login</a>
+        <div class="flex justify-center gap-2">
+            <button onclick="closeModal()" class="px-5 py-2 rounded border">Batal</button>
+            <a href="{{ route('login') }}" class="px-5 py-2 bg-pink-600 text-white rounded">Login</a>
         </div>
     </div>
 </div>
