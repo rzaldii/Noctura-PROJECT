@@ -20,6 +20,6 @@ class IssuedTicket extends Model
 
     public function orderDetails()
     {
-        return $this->belongsTo(OrderDetail::class);
+        return $this->belongsTo(OrderDetail::class, 'order_detail_id', 'id');
     }
 }

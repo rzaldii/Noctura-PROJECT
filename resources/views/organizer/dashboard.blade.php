@@ -7,22 +7,22 @@
     <h1 class="text-3xl font-bold text-center mb-8">Dashboard Event Organizer</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg shadow-lg p-6 text-center">
+        <div class="bg-blue-600 text-white rounded-lg shadow-lg p-6 text-center">
             <div class="text-sm uppercase tracking-wide mb-2">Total Event</div>
             <div class="text-4xl font-bold">{{ $totalEvents }}</div>
         </div>
 
-        <div class="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg shadow-lg p-6 text-center">
+        <div class="bg-green-600 text-white rounded-lg shadow-lg p-6 text-center">
             <div class="text-sm uppercase tracking-wide mb-2">Tiket Terjual</div>
             <div class="text-4xl font-bold">{{ $totalTicketsSold }}</div>
         </div>
 
-        <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-6 text-center">
+        <div class="bg-purple-600 text-white rounded-lg shadow-lg p-6 text-center">
             <div class="text-sm uppercase tracking-wide mb-2">Total Pelanggan</div>
             <div class="text-4xl font-bold">{{ $totalCustomers }}</div>
         </div>
 
-        <div class="bg-gradient-to-br from-pink-500 to-pink-600 text-white rounded-lg shadow-lg p-6 text-center">
+        <div class="bg-pink-600 text-white rounded-lg shadow-lg p-6 text-center">
             <div class="text-sm uppercase tracking-wide mb-2">Total Pendapatan</div>
             <div class="text-3xl font-bold">Rp{{ number_format($totalRevenue, 0, ',', '.') }}</div>
         </div>

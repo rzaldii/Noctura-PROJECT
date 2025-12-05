@@ -29,11 +29,11 @@ class Ticket extends Model
 
     public function orderDetails()
     {
-        return $this->hasMany(OrderDetail::class);
+        return $this->hasMany(OrderDetail::class, 'ticket_id', 'id');
     }
 
     public function cartItems()
     {
-        return $this->hasMany(CartItem::class);
+        return $this->hasMany(CartItem::class, 'ticket_id', 'id');
     }
 }

@@ -11,15 +11,24 @@ class Cart extends Model
 
     protected $table = 'carts';
 
-    protected $fillable = ['customer_id'];
+    protected $fillable = [
+        'customer_id',
+        'event_id',
+    ];
 
-    public function customers()
+    public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+    }
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event_id', 'id');
     }
 
     public function cartItems()
     {
-        return $this->hasMany(CartItem::class);
+        return $this->hasMany(CartItem::class, 'cart_id', 'id');
     }
 }
+

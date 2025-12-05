@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <title>Noctura — @yield('title', 'Find Events')</title>
-
-    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -36,10 +33,9 @@
         <div class="container mx-auto px-4 py-3 flex items-center justify-between">
 
             <!-- Logo -->
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('landing') }}">
-                    <h1 class="text-3xl font-bold cursor-pointer">Noctura</h1>
-                </a>
+            <div class="flex items-center gap-2 cursor-pointer">
+                <img src="{{ asset('storage/logo noctura.png') }}" alt="Noctura Logo" class="h-12 w-auto">
+                <h1 class="text-3xl font-bold cursor-pointer">Noctura</h1>
             </div>
 
             <!-- Search bar -->
@@ -66,7 +62,7 @@
 
             <!-- Login Button -->
             <a href="{{ route('login.clear') }}"
-               class="ml-4 bg-white text-gray-700 px-3 py-1 rounded-md font-medium hover:bg-gray-300 duration-300">
+               class="ml-8 bg-white text-gray-700 px-3 py-1 rounded-md font-semibold hover:bg-gray-300 duration-300">
                 Login
             </a>
         </div>

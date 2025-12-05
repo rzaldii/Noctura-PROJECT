@@ -10,7 +10,6 @@ class CartItem extends Model
     use HasFactory;
 
     protected $table = 'cart_items';
-    public $timestamps = false;
 
     protected $fillable = [
         'cart_id',
@@ -18,13 +17,13 @@ class CartItem extends Model
         'quantity'
     ];
 
-    public function carts()
+    public function cart()
     {
-        return $this->belongsTo(Cart::class);
+        return $this->belongsTo(Cart::class, 'cart_id', 'id');
     }
 
-    public function tickets()
+    public function ticket()
     {
-        return $this->belongsTo(Ticket::class);
+        return $this->belongsTo(Ticket::class, 'ticket_id', 'id');
     }
 }
