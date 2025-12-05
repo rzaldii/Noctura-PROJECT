@@ -84,6 +84,14 @@ Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer'
     Route::put('/tickets/{id}', [TicketController::class, 'update'])->name('organizer.tickets.update');
     Route::delete('/tickets/{id}', [TicketController::class, 'destroy'])->name('organizer.tickets.destroy');
 
+    Route::prefix('organizer')->middleware(['auth', 'role:organizer'])->group(function () {
+    // Halaman daftar pemesanan
+    Route::get('/orders', [OrderController::class, 'index'])->name('organizer.orders');
+    // Approve pemesanan
+    Route::post('/orders/{id}/approve', [OrderController::class, 'approve'])->name('organizer.orders.approve');
+    // Cancel pemesanan
+    Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel'])->name('organizer.orders.cancel');});
+
     // Pemesanan
     Route::get('/orders', [OrderController::class, 'index'])->name('organizer.orders');
 
