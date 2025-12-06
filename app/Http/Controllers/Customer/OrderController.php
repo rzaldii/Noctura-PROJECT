@@ -131,6 +131,81 @@ class OrderController extends Controller
         }
     }
 
+    // Checkout langsung tanpa keranjang
+    public function directCheckout()
+    {
+        $data = session('checkout');
+
+        if (!$data) {
+            return redirect()->back()->with('error', 'Tidak ada data pemesanan.');
+        }
+
+        $event = Event::find($data['event_id']);
+        $customer = auth()->user() ?? \App\Models\Customer::find(session('user_id'));
+
+        return view('customer.checkout_direct', [
+            'event' => $event,
+            'items' => $data['items'],
+            'total' => $data['total'],
+            'customer' => $customer
+        ]);
+    }
+
+    public function directCheckoutSubmit(Request $request)
+    {
+        $request->validate([
+            'payment_proof' => 'required|image|max:10240'
+        ]);
+
+        $data = session('checkout');
+        if (!$data) return back()->with('error','Data checkout tidak ditemukan.');
+
+        $customerId = session('user_id');
+        $eventId = $data['event_id'];
+        $items = $data['items'];
+        $total = $data['total'];
+
+        DB::beginTransaction();
+        try {
+            $path = $request->file('payment_proof')->store('payments','public');
+
+            $order = Order::create([
+                'customer_id' => $customerId,
+                'total_amount' => $total,
+                'status' => 'pending',
+                'payment_proof' => $path,
+                'payment_proof_uploaded_at' => now()
+            ]);
+
+            foreach ($items as $it) {
+                OrderDetail::create([
+                    'order_id' => $order->id,
+                    'ticket_id' => $it['ticket_id'],
+                    'quantity' => $it['qty'],
+                    'unit_price' => $it['unit_price'],
+                    'subtotal' => $it['subtotal']
+                ]);
+
+                Ticket::where('id', $it['ticket_id'])->decrement('stock', $it['qty']);
+                Ticket::where('id', $it['ticket_id'])->increment('sold', $it['qty']);
+            }
+
+            DB::commit();
+
+            // hapus session checkout
+            session()->forget('checkout');
+
+            return redirect()
+                ->route('customer.orders')
+                ->with('success', 'Berhasil membuat pesanan!! Mohon tunggu verifikasi dari event organizer.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error','Gagal membuat pesanan.');
+        }
+    }
+
+
     public function history()
     {
         $customerId = session('user_id');

@@ -27,7 +27,13 @@
                 Silakan isi data di bawah untuk membuat akun baru.
             </p>
 
-            <form action="{{ route('register.process') }}" method="POST" class="space-y-4">
+            @if($errors->any())
+            <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-3 text-center">
+                {{ $errors->first() }}
+            </div>
+            @endif
+
+            <form action="{{ route('register.process') }}" method="POST" id="registerForm" enctype="multipart/form-data" class="space-y-4">
                 @csrf
 
                 <div>
@@ -39,7 +45,7 @@
 
                 <div>
                     <label class="block font-medium text-gray-700 mb-1 text-xs">Username</label>
-                    <input type="text" name="username"
+                    <input type="text" name="username" maxlength="15"
                         class="w-full p-2.5 border rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-gray-400"
                         required>
                 </div>
@@ -74,21 +80,21 @@
 
                 </div>
 
-            <div>
-                <label class="block font-medium text-gray-700 mb-1 text-xs">Daftar sebagai</label>
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1 text-xs">Daftar sebagai</label>
 
-                <div class="flex items-center gap-4 text-xs">
-                    <label class="flex items-center gap-2">
-                        <input type="radio" name="role" value="customer" required>
-                        Customer
-                    </label>
+                    <div class="flex items-center gap-4 text-xs">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="role" value="customer">
+                            Customer
+                        </label>
 
-                    <label class="flex items-center gap-2">
-                        <input type="radio" name="role" value="organizer">
-                        Event Organizer
-                    </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="role" value="organizer">
+                            Event Organizer
+                        </label>
+                    </div>
                 </div>
-            </div>
 
                 <button type="submit"
                     class="w-full p-3 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-700 transition">
@@ -108,15 +114,56 @@
 </div>
 @endsection
 
-@section('content')
-<script>
-    const roleInputs = document.querySelectorAll('input[name="role"]');
-    const eoFields = document.getElementById('eoFields');
 
-    roleInputs.forEach(r => {
-        r.addEventListener('change', () => {
-            eoFields.classList.toggle('hidden', r.value !== 'organizer');
-        });
+@section('scripts')
+{{-- SUCCESS REGISTER --}}
+@if(session('success'))
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil Membuat Akun!',
+    text: '{{ session("success") }}',
+    confirmButtonColor: "#4B5563",
+    confirmButtonText: "OK"
+});
+</script>
+@endif
+
+<script>
+// Tampilkan EO fields jika pilih role EO
+document.querySelectorAll('input[name="role"]').forEach(r => {
+    r.addEventListener('change', () => {
+        document.getElementById('eoFields').classList.toggle('hidden', r.value !== 'organizer');
     });
+});
+
+// Validasi front-end password minimal 5 karakter
+document.getElementById("registerForm").addEventListener("submit", function(e){
+    const pwd = document.querySelector('input[name="password"]').value;
+    const role = document.querySelector('input[name="role"]:checked');
+
+    if(!role){
+        e.preventDefault();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Pilih Role!',
+            text: 'Silakan pilih Customer atau Event Organizer.'
+            confirmButtonColor: "#4B5563",
+            confirmButtonText: "OK"
+        });
+        return;
+    }
+
+    if(pwd.length < 3){
+        e.preventDefault();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Password Terlalu Pendek!',
+            text: 'Minimal 5 karakter.'
+            confirmButtonColor: "#4B5563",
+            confirmButtonText: "OK"
+        });
+    }
+});
 </script>
 @endsection

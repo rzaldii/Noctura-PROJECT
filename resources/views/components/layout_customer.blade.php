@@ -14,8 +14,9 @@
 </head>
 
 <body class="bg-gray-100 text-gray-900">
-    <header class="bg-gray-700 text-white shadow px-6">
-        <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+    <header class="bg-gray-700 text-white shadow px-6 top-0 left-0 w-full z-50 fixed">
+        <div class="container mx-auto px-6 py-3
+                    flex flex-wrap items-center justify-between gap-4">
 
             <!-- Logo -->
             <div class="flex items-center gap-2 cursor-pointer">
@@ -24,7 +25,8 @@
             </div>
 
             <!-- Search Bar -->
-            <form action="{{ route('customer.dashboard') }}" method="GET" class="flex items-center w-full max-w-lg mx-6">
+            <form action="{{ route('customer.dashboard') }}" method="GET"
+                class="flex items-center w-full md:max-w-lg md:mx-6">
                 <input
                     type="text"
                     name="q"
@@ -38,8 +40,7 @@
             </form>
 
             <!-- Menu -->
-            <nav class="flex items-center space-x-2">
-
+            <nav class="flex flex-wrap items-center gap-1">
                 <a href="{{ route('customer.dashboard') }}"
                    class="hover:bg-gray-600 px-3 py-1 rounded-md duration-300">
                     Beranda
@@ -67,14 +68,15 @@
                 }
             @endphp
 
-            <a href="{{ route('customer.profile') }}" class="ml-4 flex items-center gap-3">
+            <a href="{{ route('customer.profile') }}"
+               class="flex items-center gap-2">
                 <img
                     src="{{ $customerData && $customerData->image_path
                         ? asset($customerData->image_path)
                         : asset('images/default_user.png') }}"
                     class="w-12 h-12 rounded-full object-cover border"
                     alt="Foto Profil">
-                <p class="font-semibold text-xl">
+                <p class="font-semibold text-lg">
                     {{ $customerData ? $customerData->username : 'Customer' }}
                 </p>
             </a>
@@ -84,7 +86,7 @@
 
 
     <!-- CONTENT -->
-    <main class="py-8 px-6 md:px-10">
+    <main class="pt-24 pb-16 px-6 md:px-12">
         @yield('content')
     </main>
 

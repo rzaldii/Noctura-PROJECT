@@ -20,17 +20,18 @@
         }
     </script>
 
-    <!-- Iconify & JQuery -->
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
 <body class="bg-gray-100 min-h-screen font-[Poppins] text-gray-800">
 
     {{-- HEADER / NAVBAR --}}
-    <header class="bg-gray-700 text-white shadow">
-        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+    <header class="bg-gray-700 text-white shadow top-0 left-0 w-full z-50 fixed">
+        <div class="container mx-auto px-4 py-3
+            flex flex-wrap items-center justify-between gap-4">
 
             <!-- Logo -->
             <div class="flex items-center gap-2 cursor-pointer">
@@ -40,7 +41,7 @@
 
             <!-- Search bar -->
             <form action="{{ route('landing') }}" method="GET"
-                  class="flex items-center w-full max-w-xl mx-6">
+                class="flex items-center w-full md:max-w-xl md:mx-6">
                 <input
                     type="text"
                     name="q"
@@ -54,22 +55,32 @@
                 </button>
             </form>
 
-            <!-- Navbar link -->
-            <nav class="flex items-center gap-2">
-                <a href="{{ route('landing')}}" class="font-medium bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-500">Home</a>
-                <a href="{{ route('about')}}" class="font-medium bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-500">About Us</a>
-                <a href="{{ route('contact')}}" class="font-medium bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-500">Contact</a>
+            <!-- Navbar links -->
+            <nav class="flex flex-wrap items-center gap-2">
+                <a href="{{ route('landing')}}"
+                   class="font-medium bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-500">
+                    Home
+                </a>
+                <a href="{{ route('about')}}"
+                   class="font-medium bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-500">
+                    About Us
+                </a>
+                <a href="{{ route('contact')}}"
+                   class="font-medium bg-gray-700 hover:bg-gray-600 rounded-md py-1 px-3 duration-500">
+                    Contact
+                </a>
+            </nav>
 
             <!-- Login Button -->
             <a href="{{ route('login.clear') }}"
-               class="ml-8 bg-white text-gray-700 px-3 py-1 rounded-md font-semibold hover:bg-gray-300 duration-300">
+               class="bg-white text-gray-700 px-3 py-1 rounded-md font-semibold hover:bg-gray-300 duration-300">
                 Login
             </a>
         </div>
     </header>
 
     {{-- MAIN CONTENT --}}
-    <main class="pt-6 pb-16 px-6 md:px-12">
+    <main class="pt-24 pb-16 px-6 md:px-12">
         @yield('content')
     </main>
 
