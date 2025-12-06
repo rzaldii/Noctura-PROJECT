@@ -64,16 +64,19 @@
     {{-- RIGHT (form pemesanan) --}}
     <div class="space-y-4">
         <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-2xl font-bold mb-6 text-center">Form Pemesanan</h3>
-
+            <h3 class="text-2xl font-bold mb-4 text-center">Form Pemesanan</h3>
             @if(session('error'))
-                <div class="bg-red-100 text-red-600 px-3 py-2 rounded mb-3">{{ session('error') }}</div>
+                <div class="bg-red-100 text-red-700 px-4 py-3 rounded mb-4 text-center">
+                    {{ session('error') }}
+                </div>
             @endif
-            @if(session('success'))
-                <div class="bg-green-100 text-green-600 px-3 py-2 rounded mb-3">{{ session('success') }}</div>
+            @if (session('success'))
+                <div class="bg-green-100 text-green-700 px-4 py-3 rounded mb-4 text-center">
+                    {{ session('success') }}
+                </div>
             @endif
 
-            <form id="orderForm" method="POST" onsubmit="return false;">
+            <form id="orderForm" method="POST" onsubmit="event.preventDefault();">
                 @csrf
                 @foreach($tickets as $ticket)
                     <div class="mb-3 flex items-center justify-between">
@@ -198,14 +201,6 @@
             openModal();
             return;
         }
-        // validate at least one qty > 0
-        let subtotal = computeSubtotal();
-        if (subtotal <= 0) {
-            alert('Silakan pilih minimal 1 tiket.');
-            return;
-        }
-
-        // submit via POST to add_to_cart route
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = "{{ route('event.add_to_cart', ['id'=>$event->id]) }}";
@@ -227,11 +222,6 @@
             openModal();
             return;
         }
-        let subtotal = computeSubtotal();
-        if (subtotal <= 0) {
-            alert('Silakan pilih minimal 1 tiket.');
-            return;
-        }
 
         const form = document.createElement('form');
         form.method = 'POST';
@@ -247,5 +237,6 @@
         document.body.appendChild(form);
         form.submit();
     });
+
 </script>
 @endsection

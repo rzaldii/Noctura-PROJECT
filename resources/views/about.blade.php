@@ -91,20 +91,20 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-                <p class="text-2xl font-bold text-gray-900"></p>
+                <p class="text-2xl font-bold text-gray-900">50+</p>
                 <p class="text-gray-700 text-sm">Tiket Terjual</p>
             </div>
             <div>
-                <p class="text-2xl font-bold text-gray-900">150+</p>
+                <p class="text-2xl font-bold text-gray-900">6+</p>
                 <p class="text-gray-700 text-sm">Event Organizer</p>
             </div>
             <div>
-                <p class="text-2xl font-bold text-gray-900">200+</p>
+                <p class="text-2xl font-bold text-gray-900">2+</p>
                 <p class="text-gray-700 text-sm">Event Per Tahun</p>
             </div>
             <div>
-                <p class="text-2xl font-bold text-gray-900">Ratusan</p>
-                <p class="text-gray-700 text-sm">Pengguna Baru / Minggu</p>
+                <p class="text-2xl font-bold text-gray-900">Puluhan</p>
+                <p class="text-gray-700 text-sm">Pengguna Baru / Bulan</p>
             </div>
         </div>
     </div>

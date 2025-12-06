@@ -71,7 +71,7 @@ class EventDetailController extends Controller
         }
 
         if (count($items) === 0) {
-            return back()->with('error', 'Silakan pilih jumlah tiket minimal 1.');
+            return back()->with('error', 'Silakan pilih minimal 1 tiket.');
         }
 
         // Insert into carts & cart_items
@@ -140,7 +140,7 @@ class EventDetailController extends Controller
         }
 
         if (count($items) === 0) {
-            return back()->with('error', 'Silakan pilih minimal 1 tiket untuk memesan.');
+            return back()->with('error', 'Silakan pilih minimal 1 tiket.');
         }
 
         // Save checkout data into session (temporary)
@@ -150,7 +150,7 @@ class EventDetailController extends Controller
             'total' => array_sum(array_column($items,'subtotal'))
         ]]);
 
-        return back()->with('order_success', true);
+        return redirect()->route('customer.checkout.direct');
     }
 
     public function detail($id)

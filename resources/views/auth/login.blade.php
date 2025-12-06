@@ -23,13 +23,7 @@
                 Silakan masuk untuk melanjutkan ke akun Anda.
             </p>
 
-            @if (session('error'))
-            <div class="bg-red-100 text-red-700 px-4 py-2 rounded-md mb-3 text-center w-3/4 mx-auto">
-                {{ session('error') }}
-            </div>
-            @endif
-
-            <form action="{{ route('login.process') }}" method="POST" class="space-y-6">
+            <form action="{{ route('login.process') }}" method="POST" id="loginForm" class="space-y-6">
                 @csrf
 
                 <div>
@@ -51,7 +45,7 @@
 
                     <div class="flex items-center gap-4">
                         <label class="flex items-center gap-2">
-                            <input type="radio" name="role" value="customer" required>
+                            <input type="radio" name="role" value="customer">
                             Customer
                         </label>
 
@@ -78,4 +72,49 @@
         </div>
     </div>
 </div>
+@endsection
+
+
+@section('scripts')
+{{-- ERROR LOGIN --}}
+@if(session('error'))
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Login Gagal!',
+    text: '{{ session("error") }}',
+    confirmButtonColor: "#4B5563",
+    confirmButtonText: "OK"
+});
+</script>
+@endif
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(e){
+    const role = document.querySelector('input[name="role"]:checked');
+    if(!role){
+        e.preventDefault();
+        Swal.fire({
+            icon: 'warning',
+            title: 'Pilih Role!',
+            text: 'Silakan pilih login sebagai Customer atau Event Organizer'
+            confirmButtonColor: "#4B5563",
+            confirmButtonText: "OK"
+        });
+    }
+});
+</script>
+
+@if(session('register_success'))
+<script>
+    Swal.fire({
+        title: "Berhasil Membuat Akun!",
+        text: "Silahkan login terlebih dahulu untuk melanjutkan.",
+        icon: "success",
+        confirmButtonColor: "#4B5563",
+        confirmButtonText: "OK"
+    });
+</script>
+@endif
+
 @endsection

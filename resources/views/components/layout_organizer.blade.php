@@ -16,8 +16,9 @@
 <body class="bg-gray-100 text-gray-900">
 
     {{-- NAVBAR EO --}}
-    <header class="bg-gray-700 text-white shadow">
-        <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+    <header class="bg-gray-700 text-white shadow top-0 left-0 w-full z-50 fixed">
+        <div class="container mx-auto px-6 py-3
+                    flex flex-wrap items-center justify-between gap-4">
 
             {{-- Logo --}}
             <div class="flex items-center gap-2 cursor-pointer">
@@ -25,7 +26,8 @@
                 <h1 class="text-3xl font-bold cursor-pointer">Noctura</h1>
             </div>
 
-            <nav class="flex items-center space-x-4">
+            {{-- Menu --}}
+            <nav class="flex flex-wrap items-center gap-2">
                 <a href="{{ route('organizer.dashboard') }}"
                    class="hover:bg-gray-600 px-3 py-1 rounded-md duration-300">
                     Dashboard
@@ -53,13 +55,15 @@
                 }
             @endphp
 
-            <a href="{{ route('organizer.profile') }}" class="ml-4 flex items-center gap-3">
+            <a href="{{ route('organizer.profile') }}"
+               class="flex items-center gap-3">
                 <img
                     src="{{ $organizerData && $organizerData->image_path
                         ? asset($organizerData->image_path)
                         : asset('images/default_user.png') }}"
                     class="w-12 h-12 rounded-full object-cover border"
                     alt="Foto Profil">
+
                 <p class="font-semibold text-xl">
                     {{ $organizerData ? $organizerData->username : 'Organizer' }}
                 </p>
@@ -67,7 +71,9 @@
         </div>
     </header>
 
-    <main class="py-8 px-6 md:px-10">
+
+    {{-- MAIN CONTENT --}}
+    <main class="pt-24 pb-16 px-6 md:px-12">
         @yield('content')
     </main>
 

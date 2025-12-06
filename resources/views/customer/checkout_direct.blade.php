@@ -10,6 +10,7 @@
     <div class="flex gap-6 mb-8">
         <img src="{{ asset($event->image_path ?? 'images/event.jpeg') }}"
              class="w-48 h-32 object-cover rounded">
+
         <div>
             <h2 class="text-xl font-semibold">{{ $event->title }}</h2>
             <p class="text-gray-600">{{ $event->city }}</p>
@@ -35,8 +36,8 @@
 
         @foreach($items as $it)
             <div class="border-b pb-2 mb-2 text-sm flex justify-between">
-                <span>{{ $it->ticket->name }} — {{ $it->quantity }} × Rp{{ number_format($it->ticket->price, 0, ',', '.') }}</span>
-                <strong>Rp{{ number_format($it->ticket->price * $it->quantity, 0, ',', '.') }}</strong>
+                <span>{{ $it['name'] }} — {{ $it['qty'] }} × Rp{{ number_format($it['unit_price'], 0, ',', '.') }}</span>
+                <strong>Rp{{ number_format($it['subtotal'], 0, ',', '.') }}</strong>
             </div>
         @endforeach
 
@@ -52,7 +53,7 @@
     </div>
 
     {{-- FORM --}}
-    <form action="{{ route('checkout.submit', $event->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <form action="{{ route('customer.checkout.direct.submit') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
 
         <div>
@@ -68,5 +69,4 @@
         </button>
     </form>
 </div>
-
 @endsection

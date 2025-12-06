@@ -1,29 +1,58 @@
 @extends('components.layout_customer')
-
 @section('title', 'Profil Customer')
 
 @section('content')
+<h1 class="text-4xl font-bold text-center mb-8">Profile</h1>
+<div class="max-w-4xl mx-auto bg-white p-10 rounded-xl shadow mt-8">
 
-<div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow mt-8 text-center">
+    <!-- BAGIAN ATAS -->
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
 
-    <h2 class="text-4xl font-bold mb-6">Profile</h2>
-    <img src="{{ asset($customer->image_path) }}"
-         class="w-36 h-36 rounded-full object-cover border mx-auto"
-         alt="Foto Profil">
+        <!-- FOTO -->
+        <div class="relative">
+            <img src="{{ asset($customer->image_path) }}"
+                 class="w-40 h-40 rounded-full object-cover border shadow">
 
-    <div>
-        <h1 class="text-2xl font-bold pt-3 pb-6">{{ $customer->full_name }}</h1>
+        </div>
+
+        <!-- INFO NAMA -->
+        <div class="flex-1">
+
+            <!-- TOP BAR -->
+            <div class="flex items-start justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold">{{ $customer->full_name }}</h1>
+                </div>
+
+                <a href="{{ route('customer.profile.edit') }}"
+                   class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 flex items-center gap-2">
+                    Edit Profile
+                </a>
+            </div>
+
+            <!-- DETAIL INFORMASI -->
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-y-3">
+
+                <div>
+                    <p class="text-gray-500">Email</p>
+                    <p class="font-semibold">{{ $customer->email }}</p>
+                </div>
+
+                <div>
+                    <p class="text-gray-500">Username</p>
+                    <p class="font-semibold">{{ $customer->username ?? '-' }}</p>
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
-    <div class="space-y-3 text-center">
-        <p><strong>Username:</strong> {{ $customer->username }}</p>
-        <p><strong>Email:</strong> {{ $customer->email }}</p>
-    </div>
-
-    <form action="{{ route('customer.logout') }}" method="POST" class="mt-8">
+    <!-- LOGOUT -->
+    <form action="{{ route('customer.logout') }}" method="POST" class="text-center mt-10">
         @csrf
         <button type="submit"
-                class="px-5 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">
+                class="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
             Logout
         </button>
     </form>
