@@ -111,14 +111,13 @@ Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer'
 
     Route::prefix('organizer')->middleware(['auth', 'role:organizer'])->group(function () {
     // Halaman daftar pemesanan
-    Route::get('/orders', [OrderController::class, 'index'])->name('organizer.orders');
+    Route::get('/orders', [OrganizerOrderController::class, 'index'])->name('organizer.orders');
+    Route::get('/orders/report', [OrganizerOrderController::class, 'report'])->name('organizer.orders.report'); // Pindahkan ke atas
+    Route::get('/orders/{id}', [OrganizerOrderController::class, 'show'])->name('organizer.orders.show');
     // Approve pemesanan
-    Route::post('/orders/{id}/approve', [OrderController::class, 'approve'])->name('organizer.orders.approve');
+    Route::post('/orders/{id}/approve', [OrganizerOrderController::class, 'approve'])->name('organizer.orders.approve');
     // Cancel pemesanan
-    Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel'])->name('organizer.orders.cancel');});
-
-    // Pemesanan
-    Route::get('/orders', [OrderController::class, 'index'])->name('organizer.orders');
+    Route::post('/orders/{id}/cancel', [OrganizerOrderController::class, 'cancel'])->name('organizer.orders.cancel');});
 
     // Profile
     Route::get('/profile', [ProfileOrganizerController::class, 'index'])->name('organizer.profile');
