@@ -14,15 +14,16 @@ class Order extends Model
     protected $fillable = [
         'customer_id',
         'total_amount',
-        'status'
+        'status',
+        'payment_proof',
+        'payment_proof_uploaded_at'
     ];
 
     protected $casts = [
-        'total_amount' => 'decimal:2',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'payment_proof_uploaded_at' => 'datetime',
     ];
 
+    // Relationships
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -33,25 +34,15 @@ class Order extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
-    /**
-     * Scope untuk filter berdasarkan status
-     */
-    public function scopeStatus($query, $status)
-    {
-        return $query->where('status', $status);
-    }
-
-    /**
-     * Accessor untuk status badge
-     */
+    // Accessor untuk Status Badge (untuk view)
     public function getStatusBadgeAttribute()
     {
         $badges = [
-            'pending' => '<span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Pending</span>',
-            'approved' => '<span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-800">Lunas</span>',
-            'cancelled' => '<span class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-800">Dibatalkan</span>',
+            'pending' => '<span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold">Pending</span>',
+            'approved' => '<span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">Lunas</span>',
+            'cancelled' => '<span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-semibold">Dibatalkan</span>',
         ];
 
-        return $badges[$this->status] ?? $this->status;
+        return $badges[$this->status] ?? '<span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-semibold">' . ucfirst($this->status) . '</span>';
     }
 }

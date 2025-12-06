@@ -94,35 +94,34 @@ Route::middleware([AuthCustom::class, RoleCustomer::class])->prefix('customer')-
 
 });
 
-// organizer
 Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer')->group(function () {
+    // Dashboard
     Route::get('/dashboard', [OrganizerDashboardController::class, 'index'])->name('organizer.dashboard');
+
+    // Event Management (CRUD)
     Route::get('/events', [EventController::class, 'index'])->name('organizer.events');
     Route::get('/events/create', [EventController::class, 'create'])->name('organizer.events.create');
     Route::post('/events', [EventController::class, 'store'])->name('organizer.events.store');
     Route::get('/events/{id}/edit', [EventController::class, 'edit'])->name('organizer.events.edit');
     Route::put('/events/{id}', [EventController::class, 'update'])->name('organizer.events.update');
     Route::delete('/events/{id}', [EventController::class, 'destroy'])->name('organizer.events.destroy');
-    // Manage Tiket per Event
+
+    // Ticket Management
     Route::get('/events/{event}/tickets', [TicketController::class, 'index'])->name('organizer.tickets.index');
     Route::get('/events/{event}/tickets/create', [TicketController::class, 'create'])->name('organizer.tickets.create');
     Route::post('/events/{event}/tickets', [TicketController::class, 'store'])->name('organizer.tickets.store');
     Route::get('/tickets/{id}/edit', [TicketController::class, 'edit'])->name('organizer.tickets.edit');
     Route::put('/tickets/{id}', [TicketController::class, 'update'])->name('organizer.tickets.update');
     Route::delete('/tickets/{id}', [TicketController::class, 'destroy'])->name('organizer.tickets.destroy');
-    Route::prefix('organizer')->middleware(['auth', 'role:organizer'])->group(function () {
-    // Halaman daftar pemesanan
-    Route::get('/orders', [OrganizerOrderController::class, 'index'])->name('organizer.orders');
-    Route::get('/orders/report', [OrganizerOrderController::class, 'report'])->name('organizer.orders.report'); // Pindahkan ke atas
-    Route::get('/orders/{id}', [OrganizerOrderController::class, 'show'])->name('organizer.orders.show');
-    // Approve pemesanan
-    Route::post('/orders/{id}/approve', [OrganizerOrderController::class, 'approve'])->name('organizer.orders.approve');
-    // Cancel pemesanan
 
-    Route::post('/orders/{id}/cancel', [OrganizerOrderController::class, 'cancel'])->name('organizer.orders.cancel');});
+    // Order Management (Pemesanan) - PERBAIKAN DI SINI
+    Route::get('/orders', [OrganizerOrderController::class, 'index'])->name('organizer.orders');
+    Route::get('/orders/report', [OrganizerOrderController::class, 'report'])->name('organizer.orders.report');
+    Route::get('/orders/{id}', [OrganizerOrderController::class, 'show'])->name('organizer.orders.show');
+    Route::post('/orders/{id}/approve', [OrganizerOrderController::class, 'approve'])->name('organizer.orders.approve');
+    Route::post('/orders/{id}/cancel', [OrganizerOrderController::class, 'cancel'])->name('organizer.orders.cancel');
 
     // Profile
     Route::get('/profile', [ProfileOrganizerController::class, 'index'])->name('organizer.profile');
     Route::post('/logout', [ProfileOrganizerController::class, 'logout'])->name('organizer.logout');
 });
-
