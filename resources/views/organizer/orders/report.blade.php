@@ -1,3 +1,8 @@
+<?php
+// ============================================
+// FILE 5: resources/views/organizer/orders/report.blade.php - COMPLETE FIXED
+// ============================================
+?>
 @extends('components.layout_organizer')
 
 @section('title', 'Laporan Penjualan')

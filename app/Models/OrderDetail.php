@@ -1,5 +1,7 @@
 <?php
-
+// ============================================
+// FILE 1: app/Models/OrderDetail.php
+// ============================================
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,7 +27,8 @@ class OrderDetail extends Model
         return $this->belongsTo(Order::class, 'order_id');
     }
 
-    public function ticket()  // ← SINGULAR, BUKAN tickets()
+    // UBAH DARI ticket() JADI tickets()
+    public function tickets()
     {
         return $this->belongsTo(Ticket::class, 'ticket_id');
     }

@@ -1,5 +1,7 @@
 <?php
-
+// ============================================
+// FILE 1: routes/web.php - FIXED VERSION
+// ============================================
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandingController;
@@ -13,17 +15,43 @@ use App\Http\Middleware\RoleOrganizer;
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\ProfileCustomerController;
 use App\Http\Controllers\Customer\CartController;
-use App\Http\Controllers\Customer\CustomerOrderController;  // ← UBAH INI
+use App\Http\Controllers\Customer\CustomerOrderController;
 // Organizer Controllers
 use App\Http\Controllers\Organizer\DashboardController as OrganizerDashboardController;
 use App\Http\Controllers\Organizer\EventController;
-use App\Http\Controllers\Organizer\OrganizerOrderController;  // ← UBAH INI
+use App\Http\Controllers\Organizer\OrganizerOrderController;
 use App\Http\Controllers\Organizer\TicketController;
 use App\Http\Controllers\Organizer\ProfileOrganizerController;
 
-// ... route yang lain tetap sama ...
+// ========== LANDING & PUBLIC ROUTES ==========
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 
-// customer routes
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+// Detail event (public - bisa diakses tanpa login)
+Route::get('/detail/event/{id}', [EventDetailController::class, 'show'])->name('event.detail');
+
+// ========== AUTH ROUTES (GUEST ONLY) ==========
+Route::middleware(GuestCustom::class)->group(function () {
+    Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
+    Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.process');
+    Route::get('/register', [AuthController::class, 'registerPage'])->name('register');
+    Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process');
+});
+
+// Clear login session
+Route::get('/login/clear', function () {
+    session()->flush();
+    return redirect()->route('login');
+})->name('login.clear');
+
+// ========== CUSTOMER ROUTES ==========
 Route::middleware([AuthCustom::class, RoleCustomer::class])->prefix('customer')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('customer.dashboard');
@@ -38,11 +66,13 @@ Route::middleware([AuthCustom::class, RoleCustomer::class])->prefix('customer')-
     Route::get('/cart', [CartController::class, 'index'])->name('customer.cart');
     Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('customer.cart.update');
     Route::delete('/cart/delete/{id}', [CartController::class, 'delete'])->name('customer.cart.delete');
-    Route::post('/event/{id}/add-to-cart', [CartController::class, 'addFromEvent'])->name('event.add_to_cart');
     Route::delete('/cart/delete/event/{eventId}', [CartController::class, 'deleteEvent'])->name('customer.cart.delete_event');
 
-    // Orders - PAKAI CustomerOrderController
-    Route::post('/event/{id}/order-now', [CustomerOrderController::class, 'orderNow'])->name('event.order_now');
+    // Add to cart & Order now - HANYA DI SINI, TIDAK DI PUBLIC
+    Route::post('/event/{id}/add-to-cart', [EventDetailController::class, 'addToCart'])->name('event.add_to_cart');
+    Route::post('/event/{id}/order-now', [EventDetailController::class, 'orderNow'])->name('event.order_now');
+
+    // Checkout & Orders
     Route::get('/checkout/{eventId}', [CustomerOrderController::class, 'checkoutShow'])->name('checkout.show');
     Route::post('/checkout/{eventId}', [CustomerOrderController::class, 'checkoutSubmit'])->name('checkout.submit');
     Route::get('/checkout/direct', [CustomerOrderController::class, 'directCheckout'])->name('customer.checkout.direct');
@@ -52,7 +82,7 @@ Route::middleware([AuthCustom::class, RoleCustomer::class])->prefix('customer')-
     Route::get('/orders/{id}/download', [CustomerOrderController::class, 'downloadTicket'])->name('customer.orders.download');
 });
 
-// organizer routes
+// ========== ORGANIZER ROUTES ==========
 Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer')->group(function () {
     // Dashboard
     Route::get('/dashboard', [OrganizerDashboardController::class, 'index'])->name('organizer.dashboard');
@@ -73,7 +103,7 @@ Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer'
     Route::put('/tickets/{id}', [TicketController::class, 'update'])->name('organizer.tickets.update');
     Route::delete('/tickets/{id}', [TicketController::class, 'destroy'])->name('organizer.tickets.destroy');
 
-    // Orders - PAKAI OrganizerOrderController
+    // Orders
     Route::get('/orders', [OrganizerOrderController::class, 'index'])->name('organizer.orders');
     Route::get('/orders/report', [OrganizerOrderController::class, 'report'])->name('organizer.orders.report');
     Route::get('/orders/{id}', [OrganizerOrderController::class, 'show'])->name('organizer.orders.show');

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Organizer;
 
 use App\Http\Controllers\Controller;
@@ -19,42 +18,40 @@ class OrganizerOrderController extends Controller
                 return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu');
             }
 
-            // Ambil filter status dari request
             $statusFilter = $request->get('status', 'all');
 
-            // Query dengan relationship yang benar
-            $query = Order::with(['customer', 'orderDetails.ticket.event'])
-                ->whereHas('orderDetails.ticket.event', function($q) use ($organizerId) {
+            // UBAH tickets JADI tickets (sudah benar)
+            $query = Order::with(['customer', 'orderDetails.tickets.event'])
+                ->whereHas('orderDetails.tickets.event', function($q) use ($organizerId) {
                     $q->where('organizer_id', $organizerId);
                 })
                 ->orderBy('created_at', 'desc');
 
-            // Filter berdasarkan status
             if ($statusFilter !== 'all') {
                 $query->where('status', $statusFilter);
             }
 
             $orders = $query->paginate(10);
 
-            // Hitung statistik
+            // Statistik dengan relasi tickets
             $stats = [
-                'total' => Order::whereHas('orderDetails.ticket.event', function($q) use ($organizerId) {
+                'total' => Order::whereHas('orderDetails.tickets.event', function($q) use ($organizerId) {
                     $q->where('organizer_id', $organizerId);
                 })->count(),
 
-                'pending' => Order::whereHas('orderDetails.ticket.event', function($q) use ($organizerId) {
+                'pending' => Order::whereHas('orderDetails.tickets.event', function($q) use ($organizerId) {
                     $q->where('organizer_id', $organizerId);
                 })->where('status', 'pending')->count(),
 
-                'approved' => Order::whereHas('orderDetails.ticket.event', function($q) use ($organizerId) {
+                'approved' => Order::whereHas('orderDetails.tickets.event', function($q) use ($organizerId) {
                     $q->where('organizer_id', $organizerId);
                 })->where('status', 'approved')->count(),
 
-                'cancelled' => Order::whereHas('orderDetails.ticket.event', function($q) use ($organizerId) {
+                'cancelled' => Order::whereHas('orderDetails.tickets.event', function($q) use ($organizerId) {
                     $q->where('organizer_id', $organizerId);
                 })->where('status', 'cancelled')->count(),
 
-                'total_revenue' => Order::whereHas('orderDetails.ticket.event', function($q) use ($organizerId) {
+                'total_revenue' => Order::whereHas('orderDetails.tickets.event', function($q) use ($organizerId) {
                     $q->where('organizer_id', $organizerId);
                 })->where('status', 'approved')->sum('total_amount'),
             ];
@@ -63,7 +60,6 @@ class OrganizerOrderController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Error in OrganizerOrderController@index: ' . $e->getMessage());
-            dd($e->getMessage(), $e->getTrace()); // ← TAMBAHKAN INI UNTUK DEBUG
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
@@ -77,8 +73,9 @@ class OrganizerOrderController extends Controller
                 return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu');
             }
 
-            $order = Order::with(['customer', 'orderDetails.ticket.event'])
-                ->whereHas('orderDetails.ticket.event', function($q) use ($organizerId) {
+            // UBAH ticket JADI tickets
+            $order = Order::with(['customer', 'orderDetails.tickets.event'])
+                ->whereHas('orderDetails.tickets.event', function($q) use ($organizerId) {
                     $q->where('organizer_id', $organizerId);
                 })
                 ->findOrFail($id);
@@ -96,7 +93,8 @@ class OrganizerOrderController extends Controller
         try {
             $organizerId = session('user_id');
 
-            $order = Order::whereHas('orderDetails.ticket.event', function($q) use ($organizerId) {
+            // UBAH ticket JADI tickets
+            $order = Order::whereHas('orderDetails.tickets.event', function($q) use ($organizerId) {
                     $q->where('organizer_id', $organizerId);
                 })
                 ->findOrFail($id);
@@ -109,9 +107,9 @@ class OrganizerOrderController extends Controller
             try {
                 $order->update(['status' => 'approved']);
 
-                // Update stok tiket
+                // Update stok tiket - UBAH ticket JADI tickets
                 foreach ($order->orderDetails as $detail) {
-                    $ticket = $detail->ticket;
+                    $ticket = $detail->tickets; // UBAH DARI ticket JADI tickets
                     $ticket->increment('sold', $detail->quantity);
                     $ticket->decrement('stock', $detail->quantity);
                 }
@@ -134,7 +132,8 @@ class OrganizerOrderController extends Controller
         try {
             $organizerId = session('user_id');
 
-            $order = Order::whereHas('orderDetails.ticket.event', function($q) use ($organizerId) {
+            // UBAH ticket JADI tickets
+            $order = Order::whereHas('orderDetails.tickets.event', function($q) use ($organizerId) {
                     $q->where('organizer_id', $organizerId);
                 })
                 ->findOrFail($id);
@@ -166,7 +165,7 @@ class OrganizerOrderController extends Controller
                 return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu');
             }
 
-            // Data untuk grafik penjualan per event
+            // SEMUA QUERY UBAH ticket JADI tickets
             $eventSales = DB::table('orders')
                 ->join('order_details', 'orders.id', '=', 'order_details.order_id')
                 ->join('tickets', 'order_details.ticket_id', '=', 'tickets.id')
@@ -177,7 +176,6 @@ class OrganizerOrderController extends Controller
                 ->groupBy('events.id', 'events.title')
                 ->get();
 
-            // Penjualan per bulan (6 bulan terakhir)
             $monthlySales = DB::table('orders')
                 ->join('order_details', 'orders.id', '=', 'order_details.order_id')
                 ->join('tickets', 'order_details.ticket_id', '=', 'tickets.id')
@@ -195,7 +193,6 @@ class OrganizerOrderController extends Controller
                 ->orderBy('month', 'asc')
                 ->get();
 
-            // Top 5 event terlaris
             $topEvents = DB::table('orders')
                 ->join('order_details', 'orders.id', '=', 'order_details.order_id')
                 ->join('tickets', 'order_details.ticket_id', '=', 'tickets.id')

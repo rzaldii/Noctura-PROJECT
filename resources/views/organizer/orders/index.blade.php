@@ -107,7 +107,7 @@
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 @php
-                                    $events = $order->orderDetails->pluck('ticket.event')->unique('id');
+                                    $events = $order->orderDetails->pluck('tickets.event')->unique('id');
                                 @endphp
                                 @foreach($events as $event)
                                     <div class="text-sm">{{ $event->title }}</div>

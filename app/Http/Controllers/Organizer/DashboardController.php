@@ -37,7 +37,7 @@ class DashboardController extends Controller
         $totalEvents = Event::where('organizer_id', $organizerId)->count();
 
         // 2. Total Tiket Terjual
-        $totalTicketsSold = OrderDetail::whereHas('ticket', function ($q) use ($organizerId) {
+        $totalTicketsSold = OrderDetail::whereHas('tickets', function ($q) use ($organizerId) {
             $q->whereHas('event', function ($q2) use ($organizerId) {
                 $q2->where('organizer_id', $organizerId);
             });
@@ -45,7 +45,7 @@ class DashboardController extends Controller
 
         // 3. Total Pelanggan
         $totalCustomers = Order::whereHas('orderDetails', function ($q) use ($organizerId) {
-            $q->whereHas('ticket', function ($q2) use ($organizerId) {
+            $q->whereHas('tickets', function ($q2) use ($organizerId) {
                 $q2->whereHas('event', function ($q3) use ($organizerId) {
                     $q3->where('organizer_id', $organizerId);
                 });
@@ -53,7 +53,7 @@ class DashboardController extends Controller
         })->distinct('customer_id')->count('customer_id');
 
         // 4. Total Pendapatan
-        $totalRevenue = OrderDetail::whereHas('ticket', function ($q) use ($organizerId) {
+        $totalRevenue = OrderDetail::whereHas('tickets', function ($q) use ($organizerId) {
             $q->whereHas('event', function ($q2) use ($organizerId) {
                 $q2->where('organizer_id', $organizerId);
             });

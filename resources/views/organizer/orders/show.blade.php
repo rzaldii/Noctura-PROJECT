@@ -91,14 +91,15 @@
                 @foreach($order->orderDetails as $detail)
                     <tr>
                         <td class="px-6 py-4">
-                            <div class="font-medium">{{ $detail->ticket->event->title }}</div>
+                            <!-- UBAH $detail->ticket JADI $detail->tickets -->
+                            <div class="font-medium">{{ $detail->tickets->event->title }}</div>
                             <div class="text-sm text-gray-500">
-                                {{ \Carbon\Carbon::parse($detail->ticket->event->start_time)->format('d M Y') }}
+                                {{ \Carbon\Carbon::parse($detail->tickets->event->start_time)->format('d M Y') }}
                             </div>
                         </td>
                         <td class="px-6 py-4">
                             <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
-                                {{ $detail->ticket->name }}
+                                {{ $detail->tickets->name }}
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center font-medium">{{ $detail->quantity }}</td>
