@@ -150,7 +150,7 @@ class EventDetailController extends Controller
             'total' => array_sum(array_column($items,'subtotal'))
         ]]);
 
-        return redirect()->route('customer.checkout'); // kamu punya route checkout nanti
+        return back()->with('order_success', true);
     }
 
     public function detail($id)
@@ -173,5 +173,4 @@ class EventDetailController extends Controller
 
         return view('customer.event_detail', compact('event','tickets','cartQty'));
     }
-
 }

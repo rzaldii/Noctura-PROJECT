@@ -19,7 +19,7 @@
 
             <!-- Logo -->
             <div class="flex items-center gap-2 cursor-pointer">
-                <img src="{{ asset('storage/logo noctura.png') }}" alt="Noctura Logo" class="h-12 w-auto">
+                <img src="{{ asset('images/logo noctura.png') }}" alt="Noctura Logo" class="h-12 w-auto">
                 <h1 class="text-3xl font-bold cursor-pointer">Noctura</h1>
             </div>
 
@@ -50,7 +50,7 @@
                     Keranjang
                 </a>
 
-                <a href="#"
+                <a href="{{ route('customer.orders') }}"
                    class="hover:bg-gray-600 px-3 py-1 rounded-md duration-300">
                     Riwayat
                 </a>

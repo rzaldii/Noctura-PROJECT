@@ -9,7 +9,7 @@
              class="absolute inset-0 w-full h-full object-cover" alt="Event">
         <div class="absolute inset-0 bg-gray-700/70"></div>
         <div class="relative z-10 flex items-center justify-center w-full">
-            <img src="{{ asset('storage/logo noctura.png') }}" alt="Noctura Logo" class="w-auto h-44">
+            <img src="{{ asset('images/logo noctura.png') }}" alt="Noctura Logo" class="w-auto h-44">
         </div>
     </div>
 

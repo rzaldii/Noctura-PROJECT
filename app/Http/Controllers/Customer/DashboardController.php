@@ -5,57 +5,60 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\Category;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Event::with('category', 'organizer')
-            ->where('status', 'active');
+        $query = Event::query()->where('status', 'active')
+            ->with(['tickets', 'organizer', 'category']);
 
-        // --- Filter pencarian ---
         if ($request->filled('q')) {
-            $query->where('name', 'ILIKE', '%' . $request->q . '%');
+            $q = $request->input('q');
+            $query->where('title', 'ilike', "%{$q}%");
         }
 
         if ($request->filled('city')) {
-            $query->where('city', $request->city);
+            $query->where('city', $request->input('city'));
         }
 
         if ($request->filled('event_type')) {
-            $query->where('event_type', $request->event_type);
+            $query->where('event_type', $request->input('event_type'));
         }
 
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->input('category'));
         }
 
         if ($request->filled('time')) {
+            $time = $request->input('time');
             $now = Carbon::now();
-            if ($request->time == 'today') {
+
+            if ($time === 'today') {
                 $query->whereDate('start_time', $now->toDateString());
-            } elseif ($request->time == 'week') {
+            } elseif ($time === 'week') {
                 $query->whereBetween('start_time', [$now->startOfWeek(), $now->endOfWeek()]);
-            } elseif ($request->time == 'month') {
-                $query->whereMonth('start_time', $now->month);
-            } elseif ($request->time == 'year') {
-                $query->whereYear('start_time', $now->year);
+            } elseif ($time === 'month') {
+                $query->whereBetween('start_time', [$now->startOfMonth(), $now->endOfMonth()]);
+            } elseif ($time === 'year') {
+                $query->whereBetween('start_time', [$now->startOfYear(), $now->endOfYear()]);
             }
         }
 
         // Pagination
         $events = $query->orderBy('start_time', 'asc')->paginate(8)->withQueryString();
 
-        // Cities
         $cities = Event::query()
             ->whereNotNull('city')
+            ->where('city', '!=', '')
+            ->select('city')
             ->distinct()
             ->orderBy('city')
             ->pluck('city');
 
-        // Categories
-        $categories = \App\Models\Category::orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
 
         return view('customer.dashboard', compact('events', 'cities', 'categories'));
     }

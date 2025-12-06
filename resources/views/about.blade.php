@@ -2,11 +2,8 @@
 @section('title', 'About')
 
 @section('content')
-<div class="max-w-4xl mx-auto py-16 px-6">
-
-    <!-- Judul Halaman -->
-    <h1 class="text-4xl font-semibold text-gray-900 mb-8 text-center">Apa itu Noctura?</h1>
-
+<h1 class="text-4xl font-bold text-center pb-8">About Us</h1>
+<div class="max-w-4xl mx-auto pb-16 px-6">
     <!-- About -->
     <div id="about" class="bg-white p-8 rounded-2xl shadow mb-12">
         {{-- <h2 class="text-2xl font-semibold text-gray-800 mb-4">Tentang Noctura</h2> --}}

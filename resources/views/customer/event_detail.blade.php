@@ -129,7 +129,7 @@
         {{-- Organizer card --}}
         <div class="bg-white rounded-lg shadow p-4">
             <div class="flex items-center gap-4">
-                <img src="{{ asset($event->organizer->image_path ?? 'images/logo.png') }}" class="w-12 h-12 rounded-full object-cover">
+                <img src="{{ asset($event->organizer->image_path ?? 'images/logo.png') }}" class="w-16 h-16 rounded-full object-cover">
                 <div>
                     <div class="font-semibold">{{ $event->organizer->organization_name ?? $event->organizer->organization_name ?? '-' }}</div>
                     <div class="text-sm text-gray-500">Event Organizer</div>

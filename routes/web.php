@@ -61,6 +61,10 @@ Route::middleware(GuestCustom::class)->group(function () {
 Route::middleware([AuthCustom::class, RoleCustomer::class])->prefix('customer')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('customer.dashboard');
+    // Detail Event
+    Route::get('/detail/event/{id}', [EventDetailController::class, 'show'])->name('event.detail');
+    Route::post('/detail/event/{id}/add-to-cart', [EventDetailController::class, 'addToCart'])->name('event.add_to_cart');
+    Route::post('/detail/event/{id}/order-now', [EventDetailController::class, 'orderNow'])->name('event.order_now');
     // Profile
     Route::get('/profile', [ProfileCustomerController::class, 'index'])->name('customer.profile');
     Route::get('/profile/edit', [ProfileCustomerController::class, 'edit'])->name('customer.profile.edit');
@@ -74,6 +78,17 @@ Route::middleware([AuthCustom::class, RoleCustomer::class])->prefix('customer')-
     Route::post('/event/{id}/order-now', [OrderController::class, 'orderNow'])->name('event.order_now');
     Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('customer.cart.update');
     Route::delete('/cart/delete/event/{eventId}', [CartController::class, 'deleteEvent'])->name('customer.cart.delete_event');
+    // Checkout
+    Route::get('/checkout/{eventId}', [OrderController::class, 'checkoutShow'])->name('checkout.show');
+    Route::post('/checkout/{eventId}', [OrderController::class, 'checkoutSubmit'])->name('checkout.submit');
+    // RIWAYAT
+    Route::get('/orders', [OrderController::class, 'history'])->name('customer.orders');
+    // DETAIL ORDER
+    Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('customer.orders.detail');
+    // DOWNLOAD TICKET (PDF)
+    Route::get('/orders/{id}/download', [OrderController::class, 'downloadTicket'])->name('customer.orders.download');
+
+
 });
 
 // organizer
@@ -110,9 +125,3 @@ Route::middleware([AuthCustom::class, RoleOrganizer::class])->prefix('organizer'
     Route::post('/logout', [ProfileOrganizerController::class, 'logout'])->name('organizer.logout');
 });
 
-// Detail Event
-Route::get('/detail/event/{id}', [EventDetailController::class, 'show'])->name('event.detail');
-Route::post('/detail/event/{id}/add-to-cart', [EventDetailController::class, 'addToCart'])
-    ->name('event.add_to_cart');
-Route::post('/detail/event/{id}/order-now', [EventDetailController::class, 'orderNow'])
-    ->name('event.order_now');

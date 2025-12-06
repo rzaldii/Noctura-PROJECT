@@ -56,7 +56,7 @@
                             </button>
 
                             {{-- Checkout --}}
-                            <a href="#"
+                            <a href="{{ route('checkout.show', $group['event_id']) }}"
                                class="px-3 py-2 bg-pink-600 text-white text-sm rounded">
                                 Checkout
                             </a>
