@@ -20,18 +20,18 @@ class OrderDetail extends Model
         'subtotal'
     ];
 
-    public function orders()
+    public function order()
     {
-        return $this->belongsTo(Order::class, 'order_id', 'id');
+        return $this->belongsTo(Order::class, 'order_id');
     }
 
-    public function tickets()
+    public function ticket()  // ← SINGULAR, BUKAN tickets()
     {
-        return $this->belongsTo(Ticket::class, 'ticket_id', 'id');
+        return $this->belongsTo(Ticket::class, 'ticket_id');
     }
 
     public function issuedTickets()
     {
-        return $this->hasMany(IssuedTicket::class, 'order_detail_id', 'id');
+        return $this->hasMany(IssuedTicket::class, 'order_detail_id');
     }
 }

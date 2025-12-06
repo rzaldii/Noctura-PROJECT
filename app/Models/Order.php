@@ -26,15 +26,15 @@ class Order extends Model
     // Relationships
     public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
     public function orderDetails()
     {
-        return $this->hasMany(OrderDetail::class);
+        return $this->hasMany(OrderDetail::class, 'order_id');
     }
 
-    // Accessor untuk Status Badge (untuk view)
+    // Accessor untuk Status Badge
     public function getStatusBadgeAttribute()
     {
         $badges = [

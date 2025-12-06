@@ -71,27 +71,31 @@
             @endforelse
         </div>
     </div>
+
     {{-- Grafik Penjualan Bulanan --}}
-<div class="bg-white rounded-lg shadow p-6">
-    <h2 class="text-xl font-bold mb-4">Tren Penjualan 6 Bulan Terakhir</h2>
-    <div class="space-y-3">
-        @php
-            $maxMonthlySales = $monthlySales->max('total') ?: 1;
-            $months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-        @endphp
-        @forelse($monthlySales as $sale)
-            <div>
-                <div class="flex justify-between mb-1">
-                    <span class="text-sm font-medium">{{ $months[$sale->month] }} {{ $sale->year }}</span>
-                    <span class="text-sm font-bold text-green-600">Rp{{ number_format($sale->total, 0, ',', '.') }}</span>
+    <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-xl font-bold mb-4">Tren Penjualan 6 Bulan Terakhir</h2>
+        <div class="space-y-3">
+            @php
+                $maxMonthlySales = $monthlySales->max('total') ?: 1;
+                $months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            @endphp
+            @forelse($monthlySales as $sale)
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm font-medium">{{ $months[$sale->month] }} {{ $sale->year }}</span>
+                        <span class="text-sm font-bold text-green-600">Rp{{ number_format($sale->total, 0, ',', '.') }}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-4">
+                        <div class="bg-gradient-to-r from-green-500 to-blue-500 h-4 rounded-full"
+                             style="width: {{ ($sale->total / $maxMonthlySales) * 100 }}%"></div>
+                    </div>
                 </div>
-                <div class="w-full bg-gray-200 rounded-full h-4">
-                    <div class="bg-gradient-to-r from-green-500 to-blue-500 h-4 rounded-full"
-                         style="width: {{ ($sale->total / $maxMonthlySales) * 100 }}%"></div>
-                </div>
-            </div>
-        @empty
-            <p class="text-center text-gray-500 py-8">Belum ada data penjualan bulanan</p>
-        @endforelse
+            @empty
+                <p class="text-center text-gray-500 py-8">Belum ada data penjualan bulanan</p>
+            @endforelse
+        </div>
     </div>
+
 </div>
+@endsection

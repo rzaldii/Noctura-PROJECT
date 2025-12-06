@@ -41,18 +41,35 @@
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <div class="text-gray-500 text-sm">Nama Lengkap</div>
-                <div class="font-medium">{{ $order->customer->fullname }}</div>
+                <div class="font-medium">{{ $order->customer->full_name }}</div>
             </div>
             <div>
                 <div class="text-gray-500 text-sm">Email</div>
                 <div class="font-medium">{{ $order->customer->email }}</div>
             </div>
             <div>
-                <div class="text-gray-500 text-sm">No. Telepon</div>
-                <div class="font-medium">{{ $order->customer->phone ?? '-' }}</div>
+                <div class="text-gray-500 text-sm">Username</div>
+                <div class="font-medium">{{ $order->customer->username ?? '-' }}</div>
             </div>
         </div>
     </div>
+
+    {{-- Payment Proof --}}
+    @if($order->payment_proof)
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+        <h2 class="text-xl font-bold mb-4">Bukti Pembayaran</h2>
+        <div class="flex items-center gap-4">
+            <img src="{{ asset('storage/' . $order->payment_proof) }}"
+                 alt="Bukti Pembayaran"
+                 class="w-64 h-auto rounded border shadow-lg cursor-pointer"
+                 onclick="window.open(this.src, '_blank')">
+            <div class="text-sm text-gray-600">
+                <p>Klik gambar untuk memperbesar</p>
+                <p class="mt-2">Upload: {{ $order->payment_proof_uploaded_at ? $order->payment_proof_uploaded_at->format('d M Y, H:i') : '-' }}</p>
+            </div>
+        </div>
+    </div>
+    @endif
 
     {{-- Order Details --}}
     <div class="bg-white rounded-lg shadow overflow-hidden">
@@ -74,12 +91,14 @@
                 @foreach($order->orderDetails as $detail)
                     <tr>
                         <td class="px-6 py-4">
-                            <div class="font-medium">{{ $detail->tickets->event->title }}</div>
-                            <div class="text-sm text-gray-500">{{ $detail->tickets->event->date->format('d M Y') }}</div>
+                            <div class="font-medium">{{ $detail->ticket->event->title }}</div>
+                            <div class="text-sm text-gray-500">
+                                {{ \Carbon\Carbon::parse($detail->ticket->event->start_time)->format('d M Y') }}
+                            </div>
                         </td>
                         <td class="px-6 py-4">
                             <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
-                                {{ $detail->tickets->type }}
+                                {{ $detail->ticket->name }}
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center font-medium">{{ $detail->quantity }}</td>

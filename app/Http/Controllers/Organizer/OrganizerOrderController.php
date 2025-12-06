@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class OrderController extends Controller
+class OrganizerOrderController extends Controller
 {
     public function index(Request $request)
     {
@@ -22,7 +22,7 @@ class OrderController extends Controller
             // Ambil filter status dari request
             $statusFilter = $request->get('status', 'all');
 
-            // Query dengan relationship yang benar (ticket singular)
+            // Query dengan relationship yang benar
             $query = Order::with(['customer', 'orderDetails.ticket.event'])
                 ->whereHas('orderDetails.ticket.event', function($q) use ($organizerId) {
                     $q->where('organizer_id', $organizerId);
@@ -62,7 +62,8 @@ class OrderController extends Controller
             return view('organizer.orders.index', compact('orders', 'stats', 'statusFilter'));
 
         } catch (\Exception $e) {
-            Log::error('Error in OrderController@index: ' . $e->getMessage());
+            Log::error('Error in OrganizerOrderController@index: ' . $e->getMessage());
+            dd($e->getMessage(), $e->getTrace()); // ← TAMBAHKAN INI UNTUK DEBUG
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
@@ -85,7 +86,7 @@ class OrderController extends Controller
             return view('organizer.orders.show', compact('order'));
 
         } catch (\Exception $e) {
-            Log::error('Error in OrderController@show: ' . $e->getMessage());
+            Log::error('Error in OrganizerOrderController@show: ' . $e->getMessage());
             return redirect()->route('organizer.orders')->with('error', 'Order tidak ditemukan');
         }
     }
@@ -108,9 +109,9 @@ class OrderController extends Controller
             try {
                 $order->update(['status' => 'approved']);
 
-                // Update stok tiket (tambah sold, kurangi stock)
+                // Update stok tiket
                 foreach ($order->orderDetails as $detail) {
-                    $ticket = $detail->ticket; // Singular
+                    $ticket = $detail->ticket;
                     $ticket->increment('sold', $detail->quantity);
                     $ticket->decrement('stock', $detail->quantity);
                 }
@@ -123,7 +124,7 @@ class OrderController extends Controller
             }
 
         } catch (\Exception $e) {
-            Log::error('Error in OrderController@approve: ' . $e->getMessage());
+            Log::error('Error in OrganizerOrderController@approve: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
@@ -151,7 +152,7 @@ class OrderController extends Controller
             return redirect()->back()->with('success', 'Pesanan berhasil dibatalkan.');
 
         } catch (\Exception $e) {
-            Log::error('Error in OrderController@cancel: ' . $e->getMessage());
+            Log::error('Error in OrganizerOrderController@cancel: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
@@ -214,7 +215,7 @@ class OrderController extends Controller
             return view('organizer.orders.report', compact('eventSales', 'monthlySales', 'topEvents'));
 
         } catch (\Exception $e) {
-            Log::error('Error in OrderController@report: ' . $e->getMessage());
+            Log::error('Error in OrganizerOrderController@report: ' . $e->getMessage());
             return redirect()->route('organizer.orders')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }

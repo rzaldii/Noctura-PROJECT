@@ -114,7 +114,6 @@
 </div>
 @endsection
 
-
 @section('scripts')
 {{-- SUCCESS REGISTER --}}
 @if(session('success'))

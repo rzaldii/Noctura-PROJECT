@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-class OrderController extends Controller
+class CustomerOrderController extends Controller
 {
     public function orderNow(Request $request, $eventId)
     {
