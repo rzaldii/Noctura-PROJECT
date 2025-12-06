@@ -91,7 +91,7 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-                <p class="text-2xl font-bold text-gray-900">3000+</p>
+                <p class="text-2xl font-bold text-gray-900"></p>
                 <p class="text-gray-700 text-sm">Tiket Terjual</p>
             </div>
             <div>
@@ -116,13 +116,16 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
             @php
-                $partners = ['SoundWave Live', 'EduVenture', 'GameVerse'];
+                use App\Models\Organizer;
+                $organizers = Organizer::all();
             @endphp
 
-            @foreach ($partners as $partner)
+            @foreach ($organizers as $organizer)
                 <div class="flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-full bg-gray-200 border shadow-sm"></div>
-                    <p class="mt-3 font-medium text-gray-800">{{ $partner }}</p>
+                    <div class="w-20 h-20 rounded-full bg-gray-200 border shadow-sm">
+                        <img src="{{ asset($organizer->image_path) }}" alt="{{ $organizer->name }}" class="w-20 h-20 rounded-full object-cover border shadow-sm">
+                    </div>
+                    <p class="mt-3 font-medium text-gray-800">{{ $organizer->organization_name}}</p>
                 </div>
             @endforeach
 

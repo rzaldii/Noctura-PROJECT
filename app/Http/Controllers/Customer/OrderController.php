@@ -90,7 +90,9 @@ class OrderController extends Controller
             $order = Order::create([
                 'customer_id' => $customerId,
                 'total_amount' => $total,
-                'status' => 'pending'
+                'status' => 'pending',
+                'payment_proof' => $path,
+                'payment_proof_uploaded_at' => now()
             ]);
 
             // insert order_details + issued tickets
@@ -119,7 +121,9 @@ class OrderController extends Controller
             DB::commit();
 
             // tampilkan modal sukses
-            return back()->with('success_modal', true);
+            return redirect() ->route('customer.orders')
+            ->with('success', 'Berhasil membuat pesanan!! Mohon tunggu verifikasi dari event organizer.');
+
 
         } catch (\Exception $e) {
             DB::rollBack();

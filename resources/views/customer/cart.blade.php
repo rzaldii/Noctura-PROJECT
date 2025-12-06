@@ -3,6 +3,11 @@
 
 @section('content')
 <h1 class="text-4xl font-bold text-center pb-6">Keranjang Tiket</h1>
+@if (session('success'))
+    <div class="bg-green-100 text-green-700 px-4 py-3 rounded mb-6 text-center">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="max-w-6xl mx-auto mt-4">
     @if($groups->isEmpty())
         <p class="text-center text-gray-600">Keranjang kosong. <a href="{{ route('customer.dashboard') }}" class="text-blue-600 underline">Cari event</a></p>

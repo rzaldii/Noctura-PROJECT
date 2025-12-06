@@ -3,9 +3,12 @@
 
 @section('content')
 <h1 class="text-4xl font-bold text-center mb-8">Riwayat Pemesanan</h1>
-
+@if (session('success'))
+    <div class="bg-green-100 text-green-700 px-4 py-3 rounded mb-6 text-center">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="max-w-5xl mx-auto">
-
     @if($orders->isEmpty())
         <p class="text-center text-gray-500">Belum ada pemesanan.</p>
     @else
